@@ -1,119 +1,115 @@
-# 🚀 TaskFlow — Kanban-Style Task Management App
+# TaskFlow
 
-## 📋 Description
-TaskFlow is a full-stack Kanban-style task management CRUD application built to demonstrate full stack development and DevOps skills. Users can register, login, create boards, and manage tasks with drag-and-drop functionality across status columns (To Do → In Progress → Done).
+A full-stack Kanban task management app built with the MERN stack.
 
-### Key Features
-- **Authentication** — Register & Login with JWT-based auth
-- **Boards** — Full CRUD operations on project boards
-- **Tasks** — Create, Read, Update, Delete tasks within boards
-- **Drag & Drop** — Move tasks between status columns seamlessly
-- **Comments** — Add comments on individual tasks
-- **Priority & Status** — Organize tasks by priority (Low/Medium/High) and status
+## 🌐 Live Demo
 
----
+**[https://taskflow-dun-xi.vercel.app](https://taskflow-dun-xi.vercel.app)**
 
-## 🛠️ Tech Stack
+## ⚙️ Tech Stack
 
-| Layer      | Technologies                                                  |
-|------------|---------------------------------------------------------------|
-| Frontend   | React, Vite, Tailwind CSS, React Router v6, Axios, @dnd-kit/core, Zustand |
-| Backend    | Node.js, Express.js, MongoDB, Mongoose, JWT, bcrypt, dotenv, cors |
-| Deployment | Vercel (frontend), Render (backend), MongoDB Atlas (database) |
+| Layer | Technology |
+|---|---|
+| Frontend | React + Vite + Tailwind CSS + Zustand |
+| Backend | Node.js + Express.js |
+| Database | MongoDB Atlas |
+| Auth | JWT (JSON Web Tokens) |
+| Deployment | Vercel (frontend) + Render (backend) |
 
----
+## ✨ Features
 
-## 📁 Project Structure
-```
-taskflow/
-├── client/          → React frontend (Vite + Tailwind CSS)
-│   ├── public/
-│   └── src/
-│       ├── api/         → Axios instance & API config
-│       ├── components/  → Reusable UI components
-│       ├── pages/       → Route-level page components
-│       └── store/       → Zustand state management
-│
-├── server/          → Express.js backend
-│   ├── controllers/ → Route handler logic
-│   ├── middleware/   → Auth middleware (JWT verification)
-│   ├── models/       → Mongoose schemas
-│   └── routes/       → API route definitions
-│
-├── .env.example     → Environment variable template
-├── .gitignore       → Git ignore rules
-├── Dockerfile       → Docker containerization (placeholder)
-└── README.md        → Project documentation
-```
+- 🔐 User registration and login (JWT auth)
+- 📋 Create and delete boards
+- ✅ Create and delete tasks
+- 🖱️ Drag and drop tasks between columns
+- 🏷️ Priority levels (Low, Medium, High)
+- 🌙 Fully responsive dark UI
 
----
-
-## ⚙️ Setup
+## 🚀 Local Setup
 
 ### Prerequisites
-- Node.js (v18+)
-- npm or yarn
-- MongoDB Atlas account (free tier)
-- Git
+- Node.js 18+
+- MongoDB Atlas URI (or local MongoDB)
 
-### Installation
+### 1. Clone the repo
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/taskflow.git
+git clone https://github.com/shafiq-ahamed04/taskflow.git
 cd taskflow
-
-# Setup backend
-cd server
-npm install
-cp ../.env.example .env
-# Edit .env with your MongoDB Atlas URI and JWT secret
-
-# Setup frontend
-cd ../client
-npm install
 ```
 
----
-
-## ▶️ Run
-
-### Development
+### 2. Start the backend
 ```bash
-# Start backend (from /server)
 cd server
-npm run dev
+npm install
+```
 
-# Start frontend (from /client)
-cd client
+Create a `.env` file in `server/`:
+```env
+MONGO_URI=your_mongodb_atlas_uri
+JWT_SECRET=your_jwt_secret
+CLIENT_URL=http://localhost:5173
+PORT=5000
+```
+
+```bash
 npm run dev
 ```
 
-- Frontend: http://localhost:5173
-- Backend:  http://localhost:5000
+### 3. Start the frontend
+```bash
+cd client
+npm install
+```
+
+Create a `.env` file in `client/`:
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+```bash
+npm run dev
+```
+
+Frontend runs on **http://localhost:5173** · Backend runs on **http://localhost:5000**
+
+## 🗂️ Project Structure
+
+```
+taskflow/
+├── client/              # React + Vite frontend
+│   ├── src/
+│   │   ├── api/         # Axios instance
+│   │   ├── components/  # Shared components
+│   │   ├── pages/       # Dashboard, BoardPage, Login, Register
+│   │   └── store/       # Zustand auth store
+│   └── vercel.json
+└── server/              # Express backend
+    ├── controllers/
+    ├── middleware/
+    ├── models/          # Mongoose schemas
+    ├── routes/
+    └── render.yaml
+```
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login + get JWT |
+| GET | `/api/boards` | Get all user boards |
+| POST | `/api/boards` | Create a board |
+| DELETE | `/api/boards/:id` | Delete a board |
+| GET | `/api/tasks/board/:id` | Get tasks for a board |
+| POST | `/api/tasks/board/:id` | Create a task |
+| PUT | `/api/tasks/:id` | Update task (status, etc.) |
+| DELETE | `/api/tasks/:id` | Delete a task |
+
+## 🚢 Deployment
+
+- **Frontend** → [Vercel](https://vercel.com) — set `VITE_API_URL` env var to your Render backend URL
+- **Backend** → [Render](https://render.com) — set `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL` env vars
 
 ---
 
-## 🚢 Deploy
-
-### Frontend (Vercel)
-<!-- TODO: Add Vercel deployment instructions -->
-
-### Backend (Render)
-<!-- TODO: Add Render deployment instructions -->
-
-### Database (MongoDB Atlas)
-<!-- TODO: Add MongoDB Atlas setup instructions -->
-
----
-
-## 🔮 DevOps Roadmap
-- [ ] CI/CD with GitHub Actions
-- [ ] Docker containerization
-- [ ] Kubernetes deployment
-- [ ] AWS deployment
-- [ ] Monitoring & logging
-
----
-
-## 📝 License
-MIT
+Built by [Shafiq Ahamed](https://github.com/shafiq-ahamed04)
