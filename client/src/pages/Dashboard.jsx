@@ -5,18 +5,19 @@ import useAuthStore from '../store/authStore';
 
 /* ── Sidebar shared component ── */
 const Sidebar = ({ active = 'boards', onLogout, userName }) => {
+  const navigate = useNavigate();
   const nav = [
-    { key: 'dashboard', icon: '⊞', label: 'Dashboard' },
-    { key: 'boards',    icon: '▦', label: 'My Boards' },
-    { key: 'tasks',     icon: '✓', label: 'My Tasks'  },
-    { key: 'analytics', icon: '↗', label: 'Analytics' },
-    { key: 'settings',  icon: '⚙', label: 'Settings'  },
+    { key: 'boards',    icon: '📋', label: 'Boards',    path: '/' },
+    { key: 'habits',    icon: '✅', label: 'Habits',    path: '/habits' },
+    { key: 'journal',   icon: '📓', label: 'Journal',   path: '/journal' },
+    { key: 'analytics', icon: '📊', label: 'Analytics', path: '/analytics' },
+    { key: 'settings',  icon: '⚙️', label: 'Settings',  path: '/settings' },
   ];
   const initials = userName ? userName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2) : 'TF';
 
   return (
     <aside style={{
-      width: '240px', flexShrink: 0,
+      width: '220px', flexShrink: 0,
       background: '#080810',
       borderRight: '1px solid #1E1E2E',
       display: 'flex', flexDirection: 'column',
@@ -38,15 +39,17 @@ const Sidebar = ({ active = 'boards', onLogout, userName }) => {
         {nav.map(item => {
           const isActive = item.key === active;
           return (
-            <div key={item.key} style={{
-              display: 'flex', alignItems: 'center', gap: '0.75rem',
-              padding: '0.6rem 0.75rem', borderRadius: '8px', cursor: 'pointer',
-              background: isActive ? 'rgba(99,102,241,0.15)' : 'transparent',
-              color: isActive ? '#a5b4fc' : '#94A3B8',
-              fontWeight: isActive ? 600 : 400, fontSize: '0.875rem',
-              borderLeft: isActive ? '3px solid #6366F1' : '3px solid transparent',
-              transition: 'all 0.15s ease',
-            }}
+            <div key={item.key} 
+              onClick={() => navigate(item.path)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.75rem',
+                padding: '0.6rem 0.75rem', borderRadius: '8px', cursor: 'pointer',
+                background: isActive ? 'rgba(99,102,241,0.15)' : 'transparent',
+                color: isActive ? '#a5b4fc' : '#94A3B8',
+                fontWeight: isActive ? 600 : 400, fontSize: '0.875rem',
+                borderLeft: isActive ? '3px solid #6366F1' : '3px solid transparent',
+                transition: 'all 0.15s ease',
+              }}
               onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = '#F8FAFC'; } }}
               onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#94A3B8'; } }}
             >
