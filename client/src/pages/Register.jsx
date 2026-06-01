@@ -36,20 +36,21 @@ const Register = () => {
     width: '100%', background: '#0A0A0F', border: '1px solid #1E1E2E',
     borderRadius: '10px', color: '#F8FAFC', fontSize: '0.9rem',
     padding: '0.65rem 0.875rem', outline: 'none', transition: 'border-color 0.2s, box-shadow 0.2s',
+    minHeight: '44px',
   };
   const onFocus = e => { e.target.style.borderColor = '#6366F1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.15)'; };
   const onBlur  = e => { e.target.style.borderColor = '#1E1E2E'; e.target.style.boxShadow = 'none'; };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#0A0A0F] text-[#F8FAFC] font-sans">
 
-      {/* ── Left panel ── */}
-      <div style={{
-        width: '50%', minHeight: '100vh',
-        background: 'radial-gradient(ellipse at top right, rgba(99,102,241,0.18) 0%, #0A0A0F 60%)',
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-        padding: '2.5rem', position: 'relative', overflow: 'hidden',
-      }}>
+      {/* ── Left panel (Hidden on Mobile) ── */}
+      <div 
+        className="hidden md:flex md:w-1/2 flex-col justify-between p-10 relative overflow-hidden min-h-screen shrink-0"
+        style={{
+          background: 'radial-gradient(ellipse at top right, rgba(99,102,241,0.18) 0%, #0A0A0F 60%)'
+        }}
+      >
         <div style={{
           position: 'absolute', inset: 0,
           backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.08) 1px, transparent 1px)',
@@ -121,66 +122,65 @@ const Register = () => {
         <p style={{ color: '#1E1E2E', fontSize: '0.75rem', position: 'relative', zIndex: 1 }}>© 2026 TaskFlow</p>
       </div>
 
-      {/* ── Right panel ── */}
-      <div style={{
-        width: '50%', minHeight: '100vh', background: '#0D0D18',
-        backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.06) 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem',
-      }}>
-        <div style={{
-          width: '100%', maxWidth: '440px',
-          background: 'rgba(19,19,26,0.9)', border: '1px solid #1E1E2E', borderRadius: '18px',
-          padding: '2.5rem', backdropFilter: 'blur(12px)', boxShadow: '0 4px 40px rgba(0,0,0,0.5)',
-          animation: 'fadeInUp 0.35s ease',
-        }}>
-          <h2 style={{ fontSize: '1.55rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '0.25rem' }}>Create your account</h2>
-          <p style={{ color: '#10B981', fontSize: '0.85rem', fontWeight: 600, marginBottom: '1.75rem' }}>✓ Free forever. No credit card.</p>
+      {/* ── Right panel (Register Card) ── */}
+      <div 
+        className="w-full md:w-1/2 min-h-screen flex items-center justify-center p-4 md:p-8 bg-[#0D0D18] relative z-10"
+        style={{
+          backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.06) 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+      >
+        <div className="w-full max-w-[440px] bg-[#13131A]/90 border border-[#1E1E2E] rounded-2xl p-6 md:p-10 backdrop-blur-md shadow-[0_4px_40px_rgba(0,0,0,0.5)] animate-fade-up">
+          <h2 className="text-xl md:text-2xl font-bold text-[#F8FAFC] mb-1">Create your account</h2>
+          <p className="text-xs md:text-sm text-[#10B981] font-bold mb-6">✓ Free forever. No credit card.</p>
 
           {error && (
             <div style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: '#fb7185', borderRadius: '8px', padding: '0.75rem 1rem', fontSize: '0.85rem', marginBottom: '1.25rem' }}>{error}</div>
           )}
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {[
               { id: 'reg-name', label: 'FULL NAME', type: 'text', val: name, set: setName, ph: 'John Smith' },
               { id: 'reg-email', label: 'EMAIL', type: 'email', val: email, set: setEmail, ph: 'you@company.com' },
             ].map(f => (
               <div key={f.id}>
-                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#94A3B8', marginBottom: '0.4rem', letterSpacing: '0.04em' }}>{f.label}</label>
+                <label className="block text-[10px] md:text-xs font-bold text-[#94A3B8] mb-2 uppercase tracking-wider">{f.label}</label>
                 <input id={f.id} type={f.type} required placeholder={f.ph} value={f.val} onChange={e => f.set(e.target.value)} style={inputStyle} onFocus={onFocus} onBlur={onBlur} />
               </div>
             ))}
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#94A3B8', marginBottom: '0.4rem', letterSpacing: '0.04em' }}>PASSWORD</label>
-              <div style={{ position: 'relative' }}>
+              <label className="block text-[10px] md:text-xs font-bold text-[#94A3B8] mb-2 uppercase tracking-wider">PASSWORD</label>
+              <div className="relative">
                 <input id="reg-password" type={showPwd ? 'text' : 'password'} required placeholder="Min 6 characters" value={password} onChange={e => setPassword(e.target.value)} style={{ ...inputStyle, paddingRight: '2.5rem' }} onFocus={onFocus} onBlur={onBlur} />
-                <button type="button" onClick={() => setShowPwd(!showPwd)} style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#475569', cursor: 'pointer' }}>
+                <button type="button" onClick={() => setShowPwd(!showPwd)} 
+                  style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#475569', cursor: 'pointer' }}
+                  className="w-10 h-10 flex items-center justify-center"
+                >
                   {showPwd ? '🙈' : '👁️'}
                 </button>
               </div>
               {password && (
-                <div style={{ marginTop: '0.4rem' }}>
-                  <div style={{ height: '2px', background: '#1E1E2E', borderRadius: '1px', overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${(strength/3)*100}%`, background: strengthColor, transition: 'all 0.3s ease', boxShadow: `0 0 6px ${strengthColor}` }} />
+                <div className="mt-2">
+                  <div className="h-1 bg-[#1E1E2E] rounded-full overflow-hidden">
+                    <div className="h-full transition-all duration-300" style={{ width: `${(strength/3)*100}%`, background: strengthColor, boxShadow: `0 0 6px ${strengthColor}` }} />
                   </div>
-                  <p style={{ fontSize: '0.72rem', color: strengthColor, marginTop: '3px', fontWeight: 600 }}>{strengthLabel}</p>
+                  <p className="text-[10px] mt-1 font-bold" style={{ color: strengthColor }}>{strengthLabel}</p>
                 </div>
               )}
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#94A3B8', marginBottom: '0.4rem', letterSpacing: '0.04em' }}>CONFIRM PASSWORD</label>
+              <label className="block text-[10px] md:text-xs font-bold text-[#94A3B8] mb-2 uppercase tracking-wider">CONFIRM PASSWORD</label>
               <input id="reg-confirm" type="password" required placeholder="Repeat password" value={confirm} onChange={e => setConfirm(e.target.value)} style={inputStyle} onFocus={onFocus} onBlur={onBlur} />
             </div>
 
             <button id="reg-submit" type="submit" disabled={loading}
               style={{
-                width: '100%', padding: '0.8rem', fontSize: '0.95rem', fontWeight: 700,
+                width: '100%', padding: '0.8rem', fontSize: '0.9rem', fontWeight: 700,
                 borderRadius: '10px', marginTop: '0.25rem', border: 'none', color: '#fff', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1,
                 background: 'linear-gradient(135deg, #6366F1, #818CF8)',
-                boxShadow: '0 0 20px rgba(99,102,241,0.3)', transition: 'box-shadow 0.2s, transform 0.15s',
+                boxShadow: '0 0 20px rgba(99,102,241,0.3)', transition: 'box-shadow 0.2s, transform 0.15s', minHeight: '44px'
               }}
               onMouseEnter={e => { if (!loading) e.currentTarget.style.boxShadow = '0 0 32px rgba(99,102,241,0.55)'; }}
               onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 20px rgba(99,102,241,0.3)'; }}
@@ -189,11 +189,11 @@ const Register = () => {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', fontSize: '0.875rem', color: '#94A3B8', marginTop: '1.5rem' }}>
+          <p className="text-center text-xs md:text-sm text-[#94A3B8] mt-6">
             Already have an account?{' '}
-            <Link to="/login" style={{ color: '#818CF8', fontWeight: 600 }}>Sign in →</Link>
+            <Link to="/login" style={{ color: '#818CF8', fontWeight: 600, textDecoration: 'none' }}>Sign in →</Link>
           </p>
-          <p style={{ textAlign: 'center', fontSize: '0.72rem', color: '#475569', marginTop: '1rem' }}>
+          <p className="text-center text-[10px] md:text-xs text-[#475569] mt-4 leading-normal">
             By signing up you agree to our Terms & Privacy Policy
           </p>
         </div>
