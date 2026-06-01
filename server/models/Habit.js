@@ -15,6 +15,14 @@ const habitSchema = new mongoose.Schema({
     required: true,
   },
   completedDates: [{ type: String }], // stored as 'YYYY-MM-DD'
+  board: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Board'
+  },
+  task: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Task'
+  },
   createdAt: {
     type: Date,
     default: Date.now,

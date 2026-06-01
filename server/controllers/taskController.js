@@ -3,6 +3,7 @@
 
 const Task = require('../models/Task');
 const Board = require('../models/Board');
+const Habit = require('../models/Habit');
 
 // ─── Create Task ────────────────────────────────────────────
 // POST /api/tasks/board/:boardId
@@ -65,6 +66,26 @@ const updateTask = async (req, res) => {
     task.assignee = req.body.assignee ?? task.assignee;
 
     const updatedTask = await task.save();
+
+    // Auto-sync back to Habits if this task is a habit tracker
+    const habit = await Habit.findOne({ task: task._id });
+    if (habit) {
+      const today = new Date().toISOString().split('T')[0];
+      const hasToday = habit.completedDates.includes(today);
+      
+      if (updatedTask.status === 'done') {
+        if (!hasToday) {
+          habit.completedDates.push(today);
+          await habit.save();
+        }
+      } else {
+        if (hasToday) {
+          habit.completedDates = habit.completedDates.filter(d => d !== today);
+          await habit.save();
+        }
+      }
+    }
+
     res.status(200).json(updatedTask);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
