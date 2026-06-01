@@ -130,6 +130,7 @@ const Habits = () => {
     padding: '0.6rem 0.875rem',
     outline: 'none',
     transition: 'border-color 0.2s, box-shadow 0.2s',
+    minHeight: '44px',
   };
 
   const onFocus = e => {
@@ -143,52 +144,31 @@ const Habits = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-[var(--bg)] text-[var(--text-1)] font-sans">
       <Sidebar active="habits" onLogout={handleLogout} userName={user?.name} />
 
-      <main style={{
-        flex: 1,
-        overflowY: 'auto',
-        position: 'relative',
-        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-      }}>
+      <main className="flex-1 overflow-y-auto relative pb-24 md:pb-0 w-full dot-grid">
         {/* Glow */}
-        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div className="fixed top-[-150px] right-[-150px] w-[500px] h-[500px] bg-[radial-gradient(circle,var(--primary-glow)_0%,transparent_70%)] pointer-events-none z-0" />
 
-        <div style={{ position: 'relative', zIndex: 1, padding: '2rem 2.5rem', maxWidth: '1000px', margin: '0 auto' }}>
+        <div className="p-4 md:p-8 max-w-[1000px] w-full mx-auto relative z-10">
           
           {/* Top Bar */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>Daily Habits</h1>
-              <p style={{ color: 'var(--text-2)', fontSize: '0.85rem', marginTop: '2px' }}>Track daily routines and build perfect streaks</p>
+              <h1 className="text-xl md:text-2xl font-extrabold text-[var(--text-1)] tracking-tight">Daily Habits</h1>
+              <p className="text-xs md:text-sm text-[var(--text-2)] mt-1">Track daily routines and build perfect streaks</p>
             </div>
             {habits.length > 0 && (
-              <span style={{
-                background: 'rgba(16, 185, 129, 0.15)',
-                color: '#34D399',
-                borderRadius: '999px',
-                padding: '0.35rem 0.85rem',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                border: '1px solid rgba(16, 185, 129, 0.25)'
-              }}>
+              <span className="bg-emerald-500/10 border border-emerald-500/25 text-[#34D399] rounded-full px-3 py-1.5 text-xs font-bold w-fit">
                 🔥 {completedTodayCount} / {habits.length} Done Today
               </span>
             )}
           </div>
 
           {/* Add Habit Card */}
-          <div style={{
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            borderRadius: '14px',
-            padding: '1.25rem',
-            marginBottom: '2rem',
-            backdropFilter: 'blur(8px)',
-          }}>
-            <form onSubmit={handleAddHabit} style={{ display: 'flex', gap: '0.75rem' }}>
+          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 md:p-5 mb-6 backdrop-blur-md">
+            <form onSubmit={handleAddHabit} className="flex flex-col sm:flex-row gap-3">
               <input
                 id="habit-title-input"
                 type="text"
@@ -197,7 +177,8 @@ const Habits = () => {
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 disabled={adding}
-                style={{ ...inputStyle, flex: 1 }}
+                style={inputStyle}
+                className="flex-1"
                 onFocus={onFocus}
                 onBlur={onBlur}
               />
@@ -205,20 +186,7 @@ const Habits = () => {
                 id="add-habit-btn"
                 type="submit"
                 disabled={adding || !title.trim()}
-                style={{
-                  background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))',
-                  border: 'none',
-                  color: '#fff',
-                  borderRadius: '9px',
-                  padding: '0.6rem 1.5rem',
-                  fontSize: '0.875rem',
-                  fontWeight: 700,
-                  cursor: (adding || !title.trim()) ? 'not-allowed' : 'pointer',
-                  opacity: adding ? 0.7 : 1,
-                  boxShadow: 'var(--shadow-glow)',
-                  transition: 'box-shadow 0.2s',
-                  whiteSpace: 'nowrap'
-                }}
+                className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-soft)] border-none text-white rounded-lg px-6 py-3 text-xs font-bold cursor-pointer min-h-[44px] flex items-center justify-center whitespace-nowrap shadow-[var(--shadow-glow)] disabled:opacity-50"
               >
                 {adding ? 'Adding…' : 'Add Habit'}
               </button>
@@ -227,46 +195,38 @@ const Habits = () => {
 
           {/* Error Message */}
           {error && (
-            <div style={{
-              background: 'rgba(244,63,94,0.1)',
-              border: '1px solid rgba(244,63,94,0.3)',
-              color: 'var(--danger)',
-              borderRadius: '8px',
-              padding: '0.75rem 1rem',
-              fontSize: '0.85rem',
-              marginBottom: '1.5rem'
-            }}>{error}</div>
+            <div className="bg-rose-500/10 border border-rose-500/20 text-[var(--danger)] rounded-lg p-3 text-xs mb-4">{error}</div>
           )}
 
           {/* Progress Bar */}
           {habits.length > 0 && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-2)', marginBottom: '0.4rem', fontWeight: 600 }}>
+            <div className="mb-6 bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4">
+              <div className="flex justify-between text-[10px] md:text-xs text-[var(--text-2)] mb-2 font-bold uppercase tracking-wider">
                 <span>Today's Progress</span>
                 <span>{progressPercent}% Completed</span>
               </div>
-              <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: `${progressPercent}%`, background: 'linear-gradient(90deg, var(--primary), #10B981)', transition: 'width 0.4s ease' }} />
+              <div className="h-2 bg-[var(--border)] rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[#10B981] transition-all duration-300" style={{ width: `${progressPercent}%` }} />
               </div>
             </div>
           )}
 
           {/* Loading */}
           {loading ? (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 0', gap: '1rem' }}>
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
               <div className="spinner" />
-              <p style={{ color: 'var(--text-2)', fontSize: '0.875rem' }}>Loading habits…</p>
+              <p className="text-xs text-[var(--text-2)]">Loading habits…</p>
             </div>
           ) : habits.length === 0 ? (
             /* Empty State */
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '5rem 2rem', gap: '1rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '3rem' }}>🌱</div>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--text-1)' }}>No habits yet</h2>
-              <p style={{ color: 'var(--text-2)', fontSize: '0.9rem', maxWidth: '360px' }}>Add your first habit above to track routines and build consistent daily streaks!</p>
+            <div className="flex flex-col items-center justify-center py-16 px-4 gap-4 text-center">
+              <div className="text-4xl">🌱</div>
+              <h2 className="text-base md:text-lg font-bold text-[var(--text-1)]">No habits yet</h2>
+              <p className="text-xs md:text-sm text-[var(--text-2)] max-w-xs">Add your first habit above to track routines and build consistent daily streaks!</p>
             </div>
           ) : (
             /* Habits List */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div className="flex flex-col gap-3">
               {habits.map((habit, idx) => {
                 const isCompletedToday = habit.completedDates.includes(todayStr);
                 const streak = calculateStreak(habit.completedDates);
@@ -275,58 +235,52 @@ const Habits = () => {
                 return (
                   <div
                     key={habit._id}
+                    className="flex items-center justify-between bg-[var(--surface)] border rounded-xl p-3 md:px-5 md:py-4 backdrop-blur-md transition-all duration-200"
                     style={{
+                      borderColor: isCompletedToday ? 'rgba(16, 185, 129, 0.25)' : 'var(--border)',
                       background: isCompletedToday ? 'rgba(16, 185, 129, 0.04)' : 'var(--surface)',
-                      border: isCompletedToday ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid var(--border)',
-                      borderRadius: '12px',
-                      padding: '1rem 1.25rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      backdropFilter: 'blur(8px)',
-                      transition: 'all 0.2s ease',
                       animation: `fadeInUp ${0.2 + idx * 0.05}s ease`
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, minWidth: 0 }}>
-                      {/* Checkbox */}
+                    <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+                      {/* Checkbox Touch Target */}
                       <div
                         onClick={() => handleToggleComplete(habit._id)}
-                        style={{
-                          width: '22px',
-                          height: '22px',
-                          borderRadius: '50%',
-                          border: isCompletedToday ? '2px solid #10B981' : '2px solid var(--primary)',
-                          background: isCompletedToday ? '#10B981' : 'transparent',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s ease',
-                          flexShrink: 0
-                        }}
+                        className="w-11 h-11 flex items-center justify-center cursor-pointer shrink-0"
                       >
-                        {isCompletedToday && (
-                           <span style={{ color: '#fff', fontSize: '0.7rem', fontWeight: 900 }}>✓</span>
-                        )}
+                        <div
+                          style={{
+                            width: '22px',
+                            height: '22px',
+                            borderRadius: '50%',
+                            border: isCompletedToday ? '2px solid #10B981' : '2px solid var(--primary)',
+                            background: isCompletedToday ? '#10B981' : 'transparent',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.15s ease',
+                          }}
+                        >
+                          {isCompletedToday && (
+                             <span style={{ color: '#fff', fontSize: '0.75rem', fontWeight: 900 }}>✓</span>
+                          )}
+                        </div>
                       </div>
 
-                      {/* Content */}
-                      <div style={{ minWidth: 0 }}>
-                        <h3 style={{
-                          fontSize: '0.92rem',
-                          fontWeight: 700,
-                          color: isCompletedToday ? '#A7F3D0' : 'var(--text-1)',
-                          textDecoration: isCompletedToday ? 'line-through' : 'none',
-                          opacity: isCompletedToday ? 0.75 : 1,
-                          transition: 'all 0.2s',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis'
-                        }}>
+                      {/* Content Stacks on Mobile */}
+                      <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 pr-3">
+                        <h3 
+                          className="text-xs md:text-sm font-bold truncate max-w-[180px] sm:max-w-[400px]"
+                          style={{
+                            color: isCompletedToday ? '#A7F3D0' : 'var(--text-1)',
+                            textDecoration: isCompletedToday ? 'line-through' : 'none',
+                            opacity: isCompletedToday ? 0.75 : 1,
+                            transition: 'all 0.2s',
+                          }}
+                        >
                           {habit.title}
                         </h3>
-                        <span style={{ fontSize: '0.75rem', color: '#F59E0B', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '2px', marginTop: '2px' }}>
+                        <span className="text-[10px] md:text-xs text-[#F59E0B] font-bold flex items-center gap-1 shrink-0">
                           🔥 {streak} day streak
                         </span>
                       </div>
@@ -337,19 +291,7 @@ const Habits = () => {
                       id={`delete-habit-${habit._id}`}
                       onClick={() => handleDeleteHabit(habit._id)}
                       disabled={isDeleting}
-                      style={{
-                        background: 'rgba(244, 63, 94, 0.05)',
-                        border: '1px solid rgba(244, 63, 94, 0.15)',
-                        color: 'var(--danger)',
-                        borderRadius: '7px',
-                        padding: '0.35rem 0.55rem',
-                        fontSize: '0.78rem',
-                        cursor: isDeleting ? 'not-allowed' : 'pointer',
-                        opacity: isDeleting ? 0.5 : 1,
-                        transition: 'all 0.15s'
-                      }}
-                      onMouseEnter={e => { if (!isDeleting) e.currentTarget.style.background = 'rgba(244, 63, 94, 0.18)'; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244, 63, 94, 0.05)'; }}
+                      className="bg-rose-500/5 border border-rose-500/15 text-[var(--danger)] rounded-lg px-3.5 py-2.5 text-xs cursor-pointer min-h-[44px] flex items-center justify-center shrink-0 disabled:opacity-50 transition-colors hover:bg-rose-500/20"
                     >
                       {isDeleting ? '…' : '🗑'}
                     </button>

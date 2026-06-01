@@ -74,7 +74,7 @@ const Analytics = () => {
 
   // Chart data formatting: tasks count per board
   const chartData = tasks.map(tData => ({
-    name: tData.boardTitle.length > 15 ? tData.boardTitle.substring(0, 15) + '…' : tData.boardTitle,
+    name: tData.boardTitle.length > 12 ? tData.boardTitle.substring(0, 12) + '…' : tData.boardTitle,
     Tasks: tData.tasks.length,
   }));
 
@@ -110,107 +110,78 @@ const Analytics = () => {
   };
 
   const StatCard = ({ icon, label, value, color }) => (
-    <div style={{
-      background: 'var(--surface)',
-      border: '1px solid var(--border)',
-      borderRadius: '14px',
-      padding: '1.25rem',
-      flex: '1 1 200px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '1rem',
-      backdropFilter: 'blur(8px)',
-      boxShadow: 'var(--shadow-card)',
-      animation: 'fadeInUp 0.3s ease',
-    }}>
-      <div style={{
-        width: '44px',
-        height: '44px',
-        borderRadius: '10px',
-        flexShrink: 0,
-        background: `${color}18`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '1.3rem',
-        border: `1px solid ${color}30`,
-      }}>{icon}</div>
-      <div style={{ minWidth: 0 }}>
-        <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.1 }}>{value}</p>
-        <p style={{ fontSize: '0.76rem', color: 'var(--text-2)', marginTop: '2px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{label}</p>
+    <div className="flex items-center gap-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 md:p-4 backdrop-blur-md shadow-[var(--shadow-card)] animate-fade-up">
+      <div 
+        className="w-10 h-10 rounded-lg flex shrink-0 items-center justify-center text-base border"
+        style={{
+          background: `${color}18`,
+          borderColor: `${color}30`,
+          color: color
+        }}
+      >{icon}</div>
+      <div className="min-w-0">
+        <p className="text-base md:text-xl font-extrabold text-[var(--text-1)] leading-none truncate">{value}</p>
+        <p className="text-[9px] md:text-[10px] text-[var(--text-2)] mt-1 font-bold uppercase tracking-wider truncate">{label}</p>
       </div>
     </div>
   );
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-[var(--bg)] text-[var(--text-1)] font-sans">
       <Sidebar active="analytics" onLogout={handleLogout} userName={user?.name} />
 
-      <main style={{
-        flex: 1,
-        overflowY: 'auto',
-        position: 'relative',
-        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-      }}>
+      <main className="flex-1 overflow-y-auto relative pb-24 md:pb-0 w-full dot-grid">
         {/* Glow */}
-        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div className="fixed top-[-150px] right-[-150px] w-[500px] h-[500px] bg-[radial-gradient(circle,var(--primary-glow)_0%,transparent_70%)] pointer-events-none z-0" />
 
-        <div style={{ position: 'relative', zIndex: 1, padding: '2rem 2.5rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="p-4 md:p-8 max-w-[1200px] w-full mx-auto relative z-10">
           
           {/* Top Bar */}
-          <div style={{ marginBottom: '2rem' }}>
-            <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>Analytics</h1>
-            <p style={{ color: 'var(--text-2)', fontSize: '0.85rem', marginTop: '2px' }}>A dynamic workspace health report & productivity statistics</p>
+          <div className="mb-6">
+            <h1 className="text-xl md:text-2xl font-extrabold text-[var(--text-1)] tracking-tight">Analytics</h1>
+            <p className="text-xs md:text-sm text-[var(--text-2)] mt-1">A dynamic workspace health report & productivity statistics</p>
           </div>
 
           {/* Loading */}
           {loading ? (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6rem 0', gap: '1rem' }}>
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
               <div className="spinner" />
-              <p style={{ color: 'var(--text-2)', fontSize: '0.875rem' }}>Gathering workspace metrics…</p>
+              <p className="text-xs text-[var(--text-2)]">Gathering workspace metrics…</p>
             </div>
           ) : error ? (
             /* Error */
-            <div style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: 'var(--danger)', borderRadius: '12px', padding: '1.5rem', textAlign: 'center' }}>
-              <p style={{ marginBottom: '0.75rem' }}>{error}</p>
-              <button onClick={fetchData} style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff', borderRadius: '8px', padding: '0.45rem 1rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>Retry</button>
+            <div className="bg-rose-500/10 border border-rose-500/20 text-[var(--danger)] rounded-xl p-6 text-center max-w-sm mx-auto animate-fade-up">
+              <p className="text-xs mb-4">{error}</p>
+              <button onClick={fetchData} className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-soft)] border-none text-white rounded-lg px-4 py-2 text-xs font-bold cursor-pointer">Retry</button>
             </div>
           ) : (
             /* Main Analytics Display */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div className="flex flex-col gap-6">
               
               {/* Stat Grid */}
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 <StatCard icon="▦" label="Total Boards" value={totalBoards} color="var(--primary)" />
                 <StatCard icon="📋" label="Total Tasks" value={totalTasks} color="#3B82F6" />
-                <StatCard icon="✅" label="Completed Tasks" value={completedTasks} color="#10B981" />
-                <StatCard icon="⏳" label="Pending Tasks" value={pendingTasks} color="#F59E0B" />
-                <StatCard icon="🔥" label="Habits Done Today" value={`${completedHabitsToday} / ${totalHabits}`} color="#EC4899" />
+                <StatCard icon="✅" label="Completed" value={completedTasks} color="#10B981" />
+                <StatCard icon="⏳" label="Pending" value={pendingTasks} color="#F59E0B" />
+                <StatCard icon="🔥" label="Habits Done" value={`${completedHabitsToday}/${totalHabits}`} color="#EC4899" />
                 <StatCard icon="📈" label="Completion %" value={`${completionRate}%`} color="#8B5CF6" />
               </div>
 
               {/* Chart Section */}
-              <div style={{
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderRadius: '16px',
-                padding: '1.5rem',
-                backdropFilter: 'blur(8px)',
-                boxShadow: 'var(--shadow-card)',
-              }}>
-                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', marginBottom: '1.5rem' }}>📊 Tasks per Board</h2>
+              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 md:p-6 backdrop-blur-md shadow-[var(--shadow-card)] animate-fade-up">
+                <h2 className="text-sm md:text-base font-bold text-[var(--text-1)] mb-4 flex items-center gap-2">📊 Tasks per Board</h2>
                 {chartData.length === 0 ? (
-                  <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-3)', fontSize: '0.85rem' }}>
+                  <div className="text-center py-12 px-4 text-xs text-[var(--text-3)]">
                     No board data to map. Create boards and add tasks to see analysis.
                   </div>
                 ) : (
-                  <div style={{ width: '100%', height: 280 }}>
+                  <div className="w-full h-[200px] md:h-[280px]">
                     <ResponsiveContainer>
-                      <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <BarChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                        <XAxis dataKey="name" stroke="var(--text-2)" fontSize={11} tickLine={false} axisLine={false} />
-                        <YAxis stroke="var(--text-2)" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
+                        <XAxis dataKey="name" stroke="var(--text-2)" fontSize={10} tickLine={false} axisLine={false} />
+                        <YAxis stroke="var(--text-2)" fontSize={10} tickLine={false} axisLine={false} allowDecimals={false} />
                         <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--primary-glow)' }} />
                         <Bar dataKey="Tasks" fill="url(#colorTasks)" radius={[6, 6, 0, 0]} maxBarSize={45}>
                           <defs>
@@ -227,68 +198,59 @@ const Analytics = () => {
               </div>
 
               {/* Habit Streak Heatmap */}
-              <div style={{
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderRadius: '16px',
-                padding: '1.5rem',
-                backdropFilter: 'blur(8px)',
-                boxShadow: 'var(--shadow-card)',
-              }}>
-                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', marginBottom: '1.25rem' }}>🔥 7-Day Habit Completion Heatmap</h2>
+              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 md:p-6 backdrop-blur-md shadow-[var(--shadow-card)] animate-fade-up">
+                <h2 className="text-sm md:text-base font-bold text-[var(--text-1)] mb-4 flex items-center gap-2">🔥 7-Day Habit Completion Heatmap</h2>
                 {habits.length === 0 ? (
-                  <div style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--text-3)', fontSize: '0.85rem' }}>
+                  <div className="text-center py-8 px-4 text-xs text-[var(--text-3)]">
                     No habits created yet. Track streaks on the habits screen first.
                   </div>
                 ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    {/* Header Row */}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border)' }}>
-                      <span style={{ fontSize: '0.78rem', color: 'var(--text-3)', fontWeight: 700, width: '40%' }}>HABIT NAME</span>
-                      <div style={{ display: 'flex', gap: '0.65rem', justifyContent: 'flex-end', width: '60%' }}>
-                        {last7Days.map(dateStr => {
-                          const parts = dateStr.split('-');
-                          const label = `${parts[1]}/${parts[2]}`;
-                          return (
-                            <span key={dateStr} style={{ fontSize: '0.68rem', color: 'var(--text-3)', fontWeight: 700, width: '28px', textAlign: 'center' }}>
-                              {label}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Habit Heatmap list */}
-                    {habits.map(habit => (
-                      <div key={habit._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '0.85rem', color: 'var(--text-1)', fontWeight: 600, width: '40%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                          {habit.title}
-                        </span>
-                        <div style={{ display: 'flex', gap: '0.65rem', justifyContent: 'flex-end', width: '60%' }}>
+                  <div className="overflow-x-auto w-full pb-2">
+                    <div className="min-w-[480px] flex flex-col gap-3">
+                      {/* Header Row */}
+                      <div className="flex items-center justify-between pb-2 border-b border-[var(--border)]">
+                        <span className="text-[10px] md:text-xs text-[var(--text-3)] font-bold uppercase tracking-wider w-[40%]">HABIT NAME</span>
+                        <div className="flex gap-2 justify-end w-[60%]">
                           {last7Days.map(dateStr => {
-                            const isDone = habit.completedDates.includes(dateStr);
+                            const parts = dateStr.split('-');
+                            const label = `${parts[1]}/${parts[2]}`;
                             return (
-                              <div
-                                key={dateStr}
-                                title={`${habit.title} on ${dateStr}: ${isDone ? 'COMPLETED' : 'MISSED'}`}
-                                style={{
-                                  width: '28px',
-                                  height: '16px',
-                                  borderRadius: '4px',
-                                  background: isDone ? 'linear-gradient(135deg, #10B981, #059669)' : 'rgba(255, 255, 255, 0.03)',
-                                  border: isDone ? 'none' : '1px solid var(--border)',
-                                  boxShadow: isDone ? '0 0 6px rgba(16, 185, 129, 0.4)' : 'none',
-                                  transition: 'transform 0.15s ease',
-                                  cursor: 'help'
-                                }}
-                                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.15)'}
-                                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-                              />
+                              <span key={dateStr} className="text-[9px] md:text-[10px] text-[var(--text-3)] font-bold w-8 text-center shrink-0">
+                                {label}
+                              </span>
                             );
                           })}
                         </div>
                       </div>
-                    ))}
+
+                      {/* Habit Heatmap list */}
+                      {habits.map(habit => (
+                        <div key={habit._id} className="flex items-center justify-between">
+                          <span className="text-xs md:text-sm text-[var(--text-1)] font-semibold w-[40%] truncate pr-4">
+                            {habit.title}
+                          </span>
+                          <div className="flex gap-2 justify-end w-[60%]">
+                            {last7Days.map(dateStr => {
+                              const isDone = habit.completedDates.includes(dateStr);
+                              return (
+                                <div
+                                  key={dateStr}
+                                  title={`${habit.title} on ${dateStr}: ${isDone ? 'COMPLETED' : 'MISSED'}`}
+                                  className="w-8 h-4 rounded shrink-0 transition-transform duration-150 cursor-help"
+                                  style={{
+                                    background: isDone ? 'linear-gradient(135deg, #10B981, #059669)' : 'rgba(255, 255, 255, 0.03)',
+                                    border: isDone ? 'none' : '1px solid var(--border)',
+                                    boxShadow: isDone ? '0 0 6px rgba(16, 185, 129, 0.4)' : 'none',
+                                  }}
+                                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.15)'}
+                                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                                />
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

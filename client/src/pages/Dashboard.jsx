@@ -16,89 +16,114 @@ const Sidebar = ({ active = 'boards', onLogout, userName }) => {
   const initials = userName ? userName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2) : 'TF';
 
   return (
-    <aside style={{
-      width: '220px', flexShrink: 0,
-      background: 'var(--sidebar)',
-      borderRight: '1px solid var(--border)',
-      display: 'flex', flexDirection: 'column',
-      padding: '1.5rem 0.75rem',
-      height: '100vh', position: 'sticky', top: 0,
-    }}>
-      {/* Logo */}
-      <div style={{ paddingLeft: '0.5rem', marginBottom: '0.25rem' }}>
-        <span style={{ fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-1)' }}>
-          Task<span style={{ color: 'var(--primary)' }}>Flow</span>
+    <>
+      {/* Mobile Top Header */}
+      <header className="flex md:hidden items-center justify-between px-4 h-14 bg-[var(--sidebar)] border-b border-[var(--border)] sticky top-0 z-40 w-full shrink-0">
+        <span className="text-base font-extrabold tracking-tight text-[var(--text-1)]">
+          Task<span className="text-[var(--primary)]">Flow</span>
         </span>
-        <p style={{ fontSize: '0.65rem', color: 'var(--text-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '1px' }}>Workspace</p>
-      </div>
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary-soft)] flex items-center justify-center text-[10px] font-bold text-white shrink-0">
+            {initials}
+          </div>
+          <button 
+            onClick={onLogout} 
+            title="Logout"
+            className="w-11 h-11 flex items-center justify-center border-none bg-transparent text-[var(--text-3)] hover:text-[var(--danger)] cursor-pointer transition-colors duration-150"
+          >
+            <span style={{ fontSize: '1.2rem' }}>⏻</span>
+          </button>
+        </div>
+      </header>
 
-      <div style={{ height: '1px', background: 'var(--border)', margin: '1rem 0' }} />
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex flex-col w-[220px] shrink-0 bg-[var(--sidebar)] border-r border-[var(--border)] p-6 h-screen sticky top-0">
+        {/* Logo */}
+        <div className="pl-2 mb-1">
+          <span className="text-xl font-extrabold tracking-tight text-[var(--text-1)]">
+            Task<span className="text-[var(--primary)]">Flow</span>
+          </span>
+          <p className="text-[10px] text-[var(--text-3)] tracking-wider uppercase mt-1">Workspace</p>
+        </div>
 
-      {/* Nav */}
-      <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: 1 }}>
+        <div className="h-[1px] bg-[var(--border)] my-4" />
+
+        {/* Nav list */}
+        <nav className="flex flex-col gap-1 flex-1">
+          {nav.map(item => {
+            const isActive = item.key === active;
+            return (
+              <div key={item.key} 
+                onClick={() => navigate(item.path)}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-all duration-150 border-l-4 ${
+                  isActive 
+                    ? 'bg-[var(--primary-glow)] text-[var(--primary-soft)] font-semibold border-[var(--primary)]' 
+                    : 'text-[var(--text-2)] hover:bg-white/[0.04] hover:text-[var(--text-1)] border-transparent'
+                }`}
+              >
+                <span className="text-base w-[18px] text-center">{item.icon}</span>
+                <span className="text-sm">{item.label}</span>
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* User profile */}
+        <div className="h-[1px] bg-[var(--border)] my-3" />
+        <div className="flex items-center gap-3 p-2">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary-soft)] flex items-center justify-center text-xs font-bold text-white shrink-0">
+            {initials}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-semibold text-[var(--text-1)] truncate">{userName || 'User'}</p>
+            <p className="text-[10px] text-[var(--text-3)]">Free Plan</p>
+          </div>
+          <button 
+            onClick={onLogout} 
+            title="Logout"
+            className="w-8 h-8 flex items-center justify-center border-none bg-transparent text-[var(--text-3)] hover:text-[var(--danger)] cursor-pointer transition-colors duration-150"
+          >
+            ⏻
+          </button>
+        </div>
+      </aside>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[var(--sidebar)] border-t border-[var(--border)] flex md:hidden justify-around items-center h-16 pb-safe">
         {nav.map(item => {
           const isActive = item.key === active;
           return (
-            <div key={item.key} 
+            <button
+              key={item.key}
               onClick={() => navigate(item.path)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '0.75rem',
-                padding: '0.6rem 0.75rem', borderRadius: '8px', cursor: 'pointer',
-                background: isActive ? 'var(--primary-glow)' : 'transparent',
-                color: isActive ? 'var(--primary-soft)' : 'var(--text-2)',
-                fontWeight: isActive ? 600 : 400, fontSize: '0.875rem',
-                borderLeft: isActive ? '3px solid var(--primary)' : '3px solid transparent',
-                transition: 'all 0.15s ease',
-              }}
-              onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text-1)'; } }}
-              onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-2)'; } }}
+              className={`flex flex-col items-center justify-center flex-1 h-full min-h-[44px] min-w-[44px] transition-colors duration-150 border-none bg-transparent ${
+                isActive ? 'text-[var(--primary-soft)]' : 'text-[var(--text-2)] hover:text-[var(--text-1)]'
+              }`}
             >
-              <span style={{ fontSize: '1rem', width: '18px', textAlign: 'center' }}>{item.icon}</span>
-              {item.label}
-            </div>
+              <span className="text-lg leading-none">{item.icon}</span>
+              <span className="text-[9px] mt-1 font-medium">{item.label}</span>
+            </button>
           );
         })}
       </nav>
-
-      {/* User profile */}
-      <div style={{ height: '1px', background: 'var(--border)', margin: '0.75rem 0' }} />
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', padding: '0.5rem 0.5rem' }}>
-        <div style={{
-          width: '34px', height: '34px', borderRadius: '50%', flexShrink: 0,
-          background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '0.7rem', fontWeight: 700, color: '#fff',
-        }}>{initials}</div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-1)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userName || 'User'}</p>
-          <p style={{ fontSize: '0.7rem', color: 'var(--text-3)' }}>Free Plan</p>
-        </div>
-        <button onClick={onLogout} title="Logout"
-          style={{ background: 'none', border: 'none', color: 'var(--text-3)', cursor: 'pointer', fontSize: '1rem', padding: '2px', borderRadius: '4px', transition: 'color 0.15s' }}
-          onMouseEnter={e => e.currentTarget.style.color = 'var(--danger)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--text-3)'}
-        >⏻</button>
-      </div>
-    </aside>
+    </>
   );
 };
 
 /* ── Stat card ── */
 const StatCard = ({ icon, label, value, color }) => (
-  <div style={{
-    background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '14px',
-    padding: '1.25rem 1.5rem', flex: 1, minWidth: '140px',
-    display: 'flex', alignItems: 'center', gap: '1rem',
-    backdropFilter: 'blur(8px)', animation: 'fadeInUp 0.3s ease',
-  }}>
-    <div style={{
-      width: '42px', height: '42px', borderRadius: '10px', flexShrink: 0,
-      background: `${color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: '1.2rem', border: `1px solid ${color}30`,
-    }}>{icon}</div>
+  <div className="flex items-center gap-4 bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex-1 min-w-[140px] backdrop-blur-md animate-fade-up">
+    <div 
+      className="w-10 h-10 rounded-lg flex shrink-0 items-center justify-center text-lg border"
+      style={{
+        background: `${color}18`,
+        borderColor: `${color}30`,
+        color: color
+      }}
+    >{icon}</div>
     <div>
-      <p style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 }}>{value}</p>
-      <p style={{ fontSize: '0.75rem', color: 'var(--text-2)', marginTop: '2px' }}>{label}</p>
+      <p className="text-xl md:text-2xl font-extrabold text-[var(--text-1)] leading-none">{value}</p>
+      <p className="text-[10px] md:text-xs text-[var(--text-2)] mt-1 font-medium uppercase tracking-wider">{label}</p>
     </div>
   </div>
 );
@@ -114,65 +139,49 @@ const BoardCard = ({ board, index, onOpen, onDelete, deleting }) => {
 
   return (
     <div onClick={() => onOpen(board._id)}
+      className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-5 cursor-pointer relative backdrop-blur-md transition-all duration-200 hover:-translate-y-1"
       style={{
-        background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '14px',
-        padding: '1.4rem', cursor: 'pointer', position: 'relative',
-        backdropFilter: 'blur(8px)', transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
         animation: `fadeInUp ${0.2 + index * 0.05}s ease`,
       }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = color; e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 8px 28px ${color}25`; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = color; e.currentTarget.style.boxShadow = `0 8px 28px ${color}25`; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }}
     >
       {/* Top: icon + title */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '0.6rem' }}>
-        <div style={{
-          width: '38px', height: '38px', borderRadius: '10px', flexShrink: 0,
-          background: `${color}18`, border: `1px solid ${color}30`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem',
-        }}>{icon}</div>
-        <h3 style={{
-          fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.3,
-          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1,
-        }}>{board.title}</h3>
+      <div className="flex items-start gap-3 mb-3">
+        <div 
+          className="w-9 h-9 rounded-lg shrink-0 flex items-center justify-center text-base border"
+          style={{
+            background: `${color}18`,
+            borderColor: `${color}30`,
+          }}
+        >{icon}</div>
+        <h3 className="text-base font-bold text-[var(--text-1)] leading-snug truncate flex-1">{board.title}</h3>
       </div>
 
-      <p style={{
-        fontSize: '0.82rem', color: 'var(--text-2)', lineHeight: 1.55,
-        display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-        minHeight: '2.5rem', marginBottom: '1rem',
-      }}>
+      <p className="text-xs md:text-sm text-[var(--text-2)] leading-relaxed line-clamp-2 min-h-[2.5rem] mb-4">
         {board.description || 'No description provided.'}
       </p>
 
       {/* Bottom row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifycontent: 'space-between' }}
-        onClick={e => e.stopPropagation()}>
-        <span style={{
-          background: `${color}15`, color, borderRadius: '999px',
-          padding: '0.2rem 0.7rem', fontSize: '0.72rem', fontWeight: 700,
-          border: `1px solid ${color}25`,
-        }}>⊞ Board</span>
+      <div className="flex items-center justify-between" onClick={e => e.stopPropagation()}>
+        <span 
+          className="badge text-[10px] font-bold"
+          style={{
+            background: `${color}15`,
+            color: color,
+            border: `1px solid ${color}25`
+          }}
+        >⊞ Board</span>
 
-        <div style={{ display: 'flex', gap: '0.5rem', marginLeft: 'auto' }}>
+        <div className="flex gap-2">
           <button onClick={() => onOpen(board._id)}
-            style={{
-              background: 'var(--primary-glow)', border: '1px solid var(--primary-glow)',
-              color: 'var(--primary-soft)', borderRadius: '7px', padding: '0.3rem 0.75rem',
-              fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--primary-glow)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--primary-glow)'; }}
+            className="bg-[var(--primary-glow)] border-none text-[var(--primary-soft)] rounded-md px-3 py-1.5 text-xs font-semibold cursor-pointer min-h-[36px] flex items-center justify-center"
           >Open →</button>
           <button onClick={() => onDelete(board._id)} disabled={isDeleting}
-            style={{
-              background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.2)',
-              color: 'var(--danger)', borderRadius: '7px', padding: '0.3rem 0.6rem',
-              fontSize: '0.82rem', cursor: isDeleting ? 'not-allowed' : 'pointer',
-              transition: 'all 0.15s', opacity: isDeleting ? 0.5 : 1,
-            }}
-            onMouseEnter={e => { if (!isDeleting) e.currentTarget.style.background = 'rgba(244,63,94,0.18)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244,63,94,0.08)'; }}
-          >{isDeleting ? '…' : '🗑'}</button>
+            className="bg-rose-500/10 border border-rose-500/20 text-[var(--danger)] rounded-md px-2.5 py-1.5 text-xs cursor-pointer min-h-[36px] flex items-center justify-center shrink-0 disabled:opacity-50"
+          >
+            {isDeleting ? '…' : '🗑'}
+          </button>
         </div>
       </div>
     </div>
@@ -234,113 +243,93 @@ const Dashboard = () => {
   const onBlur  = e => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-[var(--bg)] text-[var(--text-1)] font-sans">
       <Sidebar active="boards" onLogout={handleLogout} userName={user?.name} />
 
-      <main style={{
-        flex: 1, overflowY: 'auto', position: 'relative',
-        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-      }}>
+      <main className="flex-1 overflow-y-auto relative pb-24 md:pb-0 w-full dot-grid">
         {/* Glow */}
-        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div className="fixed top-[-150px] right-[-150px] w-[500px] h-[500px] bg-[radial-gradient(circle,var(--primary-glow)_0%,transparent_70%)] pointer-events-none z-0" />
 
-        <div style={{ position: 'relative', zIndex: 1, padding: '2rem 2.5rem', maxWidth: '1400px' }}>
+        <div className="p-4 md:p-8 max-w-[1400px] w-full mx-auto relative z-10">
 
           {/* Top bar */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
             <div>
-              <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>My Boards</h1>
-              <p style={{ color: 'var(--text-2)', fontSize: '0.85rem', marginTop: '2px' }}>Manage and organize your projects</p>
+              <h1 className="text-xl md:text-2xl font-extrabold text-[var(--text-1)] tracking-tight">My Boards</h1>
+              <p className="text-xs md:text-sm text-[var(--text-2)] mt-1">Manage and organize your projects</p>
             </div>
             <button onClick={() => setShowForm(!showForm)}
-              style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff',
-                borderRadius: '10px', padding: '0.65rem 1.25rem', fontWeight: 700, fontSize: '0.9rem',
-                cursor: 'pointer', boxShadow: 'var(--shadow-glow)', transition: 'box-shadow 0.2s',
-                display: 'flex', alignItems: 'center', gap: '0.4rem',
-              }}
-              onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 30px var(--primary-glow)'}
-              onMouseLeave={e => e.currentTarget.style.boxShadow = 'var(--shadow-glow)'}
+              className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-soft)] border-none text-white rounded-xl px-5 py-3 font-bold text-sm cursor-pointer transition-all duration-200 min-h-[44px] flex items-center justify-center gap-2 shadow-[var(--shadow-glow)] hover:brightness-110 active:scale-95"
             >+ New Board</button>
           </div>
 
           {/* Stats row */}
-          <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
             <StatCard icon="▦" label="Total Boards" value={boards.length} color="var(--primary)" />
             <StatCard icon="✓" label="Active Boards" value={boards.length} color="#10B981" />
-            <StatCard icon="★" label="This Month" value={boards.filter(b => new Date(b.createdAt) > new Date(Date.now()-30*86400000)).length} color="#F59E0B" />
+            <div className="col-span-2 sm:col-span-1">
+              <StatCard icon="★" label="This Month" value={boards.filter(b => new Date(b.createdAt) > new Date(Date.now()-30*86400000)).length} color="#F59E0B" />
+            </div>
           </div>
 
           {/* Create form */}
           {showForm && (
-            <div style={{
-              background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '14px',
-              padding: '1.5rem', marginBottom: '2rem', backdropFilter: 'blur(12px)',
-              animation: 'fadeInUp 0.25s ease',
-            }}>
-              <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', marginBottom: '1rem' }}>＋ Create New Board</h2>
-              {createError && <div style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: 'var(--danger)', borderRadius: '8px', padding: '0.65rem 1rem', fontSize: '0.85rem', marginBottom: '1rem' }}>{createError}</div>}
-              <form onSubmit={handleCreate} style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <input id="board-title" type="text" required placeholder="Board title *" value={title} onChange={e => setTitle(e.target.value)} disabled={creating} style={{ ...inputStyle, flex: '1 1 180px' }} onFocus={onFocus} onBlur={onBlur} />
-                <input id="board-desc" type="text" placeholder="Description (optional)" value={desc} onChange={e => setDesc(e.target.value)} disabled={creating} style={{ ...inputStyle, flex: '2 1 260px' }} onFocus={onFocus} onBlur={onBlur} />
-                <button id="create-board-btn" type="submit" disabled={creating || !title.trim()}
-                  style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff', borderRadius: '9px', padding: '0.6rem 1.25rem', fontSize: '0.875rem', fontWeight: 700, cursor: creating || !title.trim() ? 'not-allowed' : 'pointer', opacity: creating ? 0.7 : 1, whiteSpace: 'nowrap', boxShadow: 'var(--shadow-glow)', transition: 'box-shadow 0.2s' }}
-                >{creating ? 'Creating…' : 'Create Board'}</button>
-                <button type="button" onClick={() => setShowForm(false)}
-                  style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-2)', borderRadius: '9px', padding: '0.6rem 1rem', fontSize: '0.875rem', cursor: 'pointer', transition: 'border-color 0.15s, color 0.15s' }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary-soft)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-2)'; }}
-                >Cancel</button>
+            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-5 mb-6 backdrop-blur-md animate-fade-up shadow-[var(--shadow-card)]">
+              <h2 className="text-sm md:text-base font-bold text-[var(--text-1)] mb-4">＋ Create New Board</h2>
+              {createError && <div className="bg-rose-500/10 border border-rose-500/20 text-[var(--danger)] rounded-lg p-3 text-xs mb-4">{createError}</div>}
+              <form onSubmit={handleCreate} className="flex flex-col md:flex-row gap-3">
+                <input id="board-title" type="text" required placeholder="Board title *" value={title} onChange={e => setTitle(e.target.value)} disabled={creating} className="flex-1" style={inputStyle} onFocus={onFocus} onBlur={onBlur} />
+                <input id="board-desc" type="text" placeholder="Description (optional)" value={desc} onChange={e => setDesc(e.target.value)} disabled={creating} className="flex-1 md:flex-[2]" style={inputStyle} onFocus={onFocus} onBlur={onBlur} />
+                <div className="flex gap-2">
+                  <button id="create-board-btn" type="submit" disabled={creating || !title.trim()}
+                    className="flex-1 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-soft)] border-none text-white rounded-lg px-5 py-3 font-bold text-xs cursor-pointer min-h-[44px] flex items-center justify-center whitespace-nowrap disabled:opacity-50"
+                  >{creating ? 'Creating…' : 'Create Board'}</button>
+                  <button type="button" onClick={() => setShowForm(false)}
+                    className="bg-transparent border border-[var(--border)] text-[var(--text-2)] rounded-lg px-4 py-3 text-xs font-semibold cursor-pointer min-h-[44px] flex items-center justify-center hover:border-[var(--primary)] hover:text-[var(--primary-soft)]"
+                  >Cancel</button>
+                </div>
               </form>
             </div>
           )}
 
           {/* Loading */}
           {loading && (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '5rem 0', gap: '1rem' }}>
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
               <div className="spinner" />
-              <p style={{ color: 'var(--text-2)', fontSize: '0.875rem' }}>Loading your boards…</p>
+              <p className="text-xs md:text-sm text-[var(--text-2)]">Loading your boards…</p>
             </div>
           )}
 
           {/* Error */}
           {!loading && fetchError && (
-            <div style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: 'var(--danger)', borderRadius: '12px', padding: '1.5rem', textAlign: 'center' }}>
-              <p style={{ marginBottom: '0.75rem' }}>{fetchError}</p>
-              <button onClick={fetchBoards} style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff', borderRadius: '8px', padding: '0.45rem 1rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>Retry</button>
+            <div className="bg-rose-500/10 border border-rose-500/20 text-[var(--danger)] rounded-xl p-6 text-center max-w-sm mx-auto">
+              <p className="text-xs md:text-sm mb-4">{fetchError}</p>
+              <button onClick={fetchBoards} className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-soft)] border-none text-white rounded-lg px-4 py-2 text-xs font-bold cursor-pointer">Retry</button>
             </div>
           )}
 
           {/* Empty state */}
           {!loading && !fetchError && boards.length === 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '5rem 2rem', gap: '1rem', textAlign: 'center' }}>
-              <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '1rem' }}>
+            <div className="flex flex-col items-center justify-center py-12 px-4 gap-4 text-center">
+              <div className="flex gap-3 mb-2">
                 {['To Do','In Progress','Done'].map((col, i) => (
-                  <div key={col} style={{ width: '80px', background: 'var(--surface)', border: '1px dashed var(--primary-glow)', borderRadius: '8px', padding: '0.5rem 0.4rem' }}>
-                    <div style={{ height: '4px', background: ['#3b82f6','#f59e0b','#10b981'][i], borderRadius: '2px', marginBottom: '0.4rem', boxShadow: `0 0 6px ${['#3b82f6','#f59e0b','#10b981'][i]}` }} />
-                    {[1,2].map(n => <div key={n} style={{ height: '8px', background: 'var(--primary-glow)', borderRadius: '3px', marginBottom: '4px' }} />)}
+                  <div key={col} className="w-[70px] bg-[var(--surface)] border border-dashed border-[var(--primary-glow)] rounded-lg p-2">
+                    <div className="h-1 rounded-sm mb-2" style={{ background: ['#3b82f6','#f59e0b','#10b981'][i] }} />
+                    {[1,2].map(n => <div key={n} className="h-1 bg-[var(--primary-glow)] rounded-sm mb-1" />)}
                   </div>
                 ))}
               </div>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--text-1)' }}>No boards yet</h2>
-              <p style={{ color: 'var(--text-2)', fontSize: '0.9rem' }}>Create your first board and start organizing your work</p>
+              <h2 className="text-base md:text-lg font-bold text-[var(--text-1)]">No boards yet</h2>
+              <p className="text-xs md:text-sm text-[var(--text-2)] max-w-xs">Create your first board and start organizing your work</p>
               <button onClick={() => setShowForm(true)}
-                style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff', borderRadius: '10px', padding: '0.75rem 1.5rem', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer', boxShadow: 'var(--shadow-glow)', marginTop: '0.5rem', transition: 'box-shadow 0.2s' }}
-                onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 32px var(--primary-glow)'}
-                onMouseLeave={e => e.currentTarget.style.boxShadow = 'var(--shadow-glow)'}
+                className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-soft)] border-none text-white rounded-xl px-5 py-3 font-bold text-sm cursor-pointer shadow-[var(--shadow-glow)] min-h-[44px] flex items-center justify-center"
               >+ Create your first board</button>
-              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                {['⚡ Takes 30 seconds','🔒 Private by default','🤝 Invite team later'].map(p => (
-                  <span key={p} style={{ background: 'var(--primary-glow)', color: 'var(--primary-soft)', border: '1px solid var(--primary-glow)', borderRadius: '999px', padding: '0.25rem 0.8rem', fontSize: '0.75rem', fontWeight: 500 }}>{p}</span>
-                ))}
-              </div>
             </div>
           )}
 
           {/* Boards grid */}
           {!loading && !fetchError && boards.length > 0 && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px,1fr))', gap: '1.25rem' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {boards.map((board, i) => (
                 <BoardCard key={board._id} board={board} index={i} onOpen={id => navigate(`/board/${id}`)} onDelete={handleDelete} deleting={deleting} />
               ))}

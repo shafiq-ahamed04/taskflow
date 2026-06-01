@@ -85,6 +85,7 @@ const Journal = () => {
     padding: '0.65rem 0.875rem',
     outline: 'none',
     transition: 'border-color 0.2s, box-shadow 0.2s',
+    minHeight: '44px',
   };
 
   const onFocus = e => {
@@ -98,57 +99,35 @@ const Journal = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-[var(--bg)] text-[var(--text-1)] font-sans">
       <Sidebar active="journal" onLogout={handleLogout} userName={user?.name} />
 
-      <main style={{
-        flex: 1,
-        overflowY: 'auto',
-        position: 'relative',
-        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-      }}>
+      <main className="flex-1 overflow-y-auto relative pb-24 md:pb-0 w-full dot-grid">
         {/* Glow */}
-        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div className="fixed top-[-150px] right-[-150px] w-[500px] h-[500px] bg-[radial-gradient(circle,var(--primary-glow)_0%,transparent_70%)] pointer-events-none z-0" />
 
-        <div style={{ position: 'relative', zIndex: 1, padding: '2rem 2.5rem', maxWidth: '900px', margin: '0 auto' }}>
+        <div className="p-4 md:p-8 max-w-[900px] w-full mx-auto relative z-10">
           
           {/* Top Bar */}
-          <div style={{ marginBottom: '2rem' }}>
-            <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>My Journal</h1>
-            <p style={{ color: 'var(--text-2)', fontSize: '0.85rem', marginTop: '2px' }}>Your secure private space for daily reflections and thoughts</p>
+          <div className="mb-6">
+            <h1 className="text-xl md:text-2xl font-extrabold text-[var(--text-1)] tracking-tight">My Journal</h1>
+            <p className="text-xs md:text-sm text-[var(--text-2)] mt-1">Your secure private space for daily reflections and thoughts</p>
           </div>
 
           {/* Form */}
-          <div style={{
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            borderRadius: '16px',
-            padding: '1.5rem',
-            marginBottom: '2.5rem',
-            backdropFilter: 'blur(8px)',
-            boxShadow: 'var(--shadow-card)',
-          }}>
-            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 md:p-6 mb-8 backdrop-blur-md shadow-[var(--shadow-card)] animate-fade-up">
+            <h2 className="text-sm md:text-base font-bold text-[var(--text-1)] mb-4 flex items-center gap-2">
               📝 New Reflection
             </h2>
             
             {error && (
-              <div style={{
-                background: 'rgba(244,63,94,0.1)',
-                border: '1px solid rgba(244,63,94,0.3)',
-                color: 'var(--danger)',
-                borderRadius: '8px',
-                padding: '0.75rem 1rem',
-                fontSize: '0.85rem',
-                marginBottom: '1rem'
-              }}>{error}</div>
+              <div className="bg-rose-500/10 border border-rose-500/20 text-[var(--danger)] rounded-lg p-3 text-xs mb-4">{error}</div>
             )}
 
-            <form onSubmit={handleSaveEntry} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <div style={{ flex: 1, minWidth: '200px' }}>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-2)', marginBottom: '0.4rem' }}>TITLE</label>
+            <form onSubmit={handleSaveEntry} className="flex flex-col gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1 min-w-[200px]">
+                  <label className="block text-[10px] md:text-xs font-bold text-[var(--text-2)] mb-2 uppercase tracking-wider">TITLE</label>
                   <input
                     id="journal-title-input"
                     type="text"
@@ -162,8 +141,8 @@ const Journal = () => {
                     onBlur={onBlur}
                   />
                 </div>
-                <div style={{ width: '180px' }}>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-2)', marginBottom: '0.4rem' }}>DATE</label>
+                <div className="w-full sm:w-[180px]">
+                  <label className="block text-[10px] md:text-xs font-bold text-[var(--text-2)] mb-2 uppercase tracking-wider">DATE</label>
                   <input
                     id="journal-date-input"
                     type="date"
@@ -179,7 +158,7 @@ const Journal = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-2)', marginBottom: '0.4rem' }}>CONTENT</label>
+                <label className="block text-[10px] md:text-xs font-bold text-[var(--text-2)] mb-2 uppercase tracking-wider">CONTENT</label>
                 <textarea
                   id="journal-content-textarea"
                   required
@@ -193,7 +172,7 @@ const Journal = () => {
                     width: '100%',
                     resize: 'vertical',
                     fontFamily: 'inherit',
-                    lineHeight: '1.5'
+                    lineHeight: '1.6'
                   }}
                   onFocus={onFocus}
                   onBlur={onBlur}
@@ -204,22 +183,7 @@ const Journal = () => {
                 id="save-journal-btn"
                 type="submit"
                 disabled={saving || !title.trim() || !content.trim()}
-                style={{
-                  background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))',
-                  border: 'none',
-                  color: '#fff',
-                  borderRadius: '9px',
-                  padding: '0.7rem',
-                  fontSize: '0.9rem',
-                  fontWeight: 700,
-                  cursor: (saving || !title.trim() || !content.trim()) ? 'not-allowed' : 'pointer',
-                  opacity: saving ? 0.7 : 1,
-                  boxShadow: 'var(--shadow-glow)',
-                  transition: 'box-shadow 0.2s, transform 0.1s',
-                  alignSelf: 'flex-start',
-                  paddingLeft: '2rem',
-                  paddingRight: '2rem'
-                }}
+                className="w-full sm:w-auto bg-gradient-to-r from-[var(--primary)] to-[var(--primary-soft)] border-none text-white rounded-lg px-6 py-3 text-xs font-bold cursor-pointer min-h-[44px] flex items-center justify-center shadow-[var(--shadow-glow)] disabled:opacity-50 transition-all duration-150 hover:brightness-110 active:scale-95"
               >
                 {saving ? 'Saving…' : 'Save Entry →'}
               </button>
@@ -227,35 +191,28 @@ const Journal = () => {
           </div>
 
           {/* Past Entries Heading */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.75rem' }}>
-            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-1)' }}>Past Entries</h2>
-            <span style={{
-              background: 'var(--border)',
-              color: 'var(--text-2)',
-              borderRadius: '999px',
-              padding: '0.15rem 0.6rem',
-              fontSize: '0.75rem',
-              fontWeight: 700
-            }}>
+          <div className="flex items-center justify-between mb-4 border-b border-[var(--border)] pb-3">
+            <h2 className="text-base md:text-lg font-bold text-[var(--text-1)]">Past Entries</h2>
+            <span className="bg-[var(--border)] text-[var(--text-2)] rounded-full px-2.5 py-1 text-[10px] md:text-xs font-bold">
               {entries.length} entries
             </span>
           </div>
 
           {/* Loading / Empty States */}
           {loading ? (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 0', gap: '1rem' }}>
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
               <div className="spinner" />
-              <p style={{ color: 'var(--text-2)', fontSize: '0.875rem' }}>Loading entries…</p>
+              <p className="text-xs text-[var(--text-2)]">Loading entries…</p>
             </div>
           ) : entries.length === 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', gap: '1rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '3rem' }}>📓</div>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-1)' }}>No journal entries yet</h2>
-              <p style={{ color: 'var(--text-2)', fontSize: '0.875rem', maxWidth: '320px' }}>Start documenting your journey. Add your thoughts above to build a beautiful repository of daily memories.</p>
+            <div className="flex flex-col items-center justify-center py-16 px-4 gap-4 text-center">
+              <div className="text-4xl">📓</div>
+              <h2 className="text-base md:text-lg font-bold text-[var(--text-1)]">No journal entries yet</h2>
+              <p className="text-xs md:text-sm text-[var(--text-2)] max-w-xs">Start documenting your journey. Add your thoughts above to build a beautiful repository of daily memories.</p>
             </div>
           ) : (
             /* Journal Entries List */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="flex flex-col gap-4">
               {entries.map((entry, idx) => {
                 const isDeleting = deletingId === entry._id;
                 
@@ -270,41 +227,21 @@ const Journal = () => {
                 return (
                   <div
                     key={entry._id}
+                    className="flex flex-col gap-2 bg-[var(--surface)] border border-[var(--border)] border-l-4 rounded-xl p-4 md:p-5 backdrop-blur-md transition-all duration-200"
                     style={{
-                      background: 'var(--surface)',
-                      border: '1px solid var(--border)',
-                      borderLeft: '4px solid var(--primary)',
-                      borderRadius: '12px',
-                      padding: '1.25rem',
-                      backdropFilter: 'blur(8px)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0.5rem',
-                      position: 'relative',
-                      transition: 'border-color 0.2s, transform 0.2s',
+                      borderLeftColor: 'var(--primary)',
                       animation: `fadeInUp ${0.2 + idx * 0.05}s ease`
                     }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary-soft)'; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; }}
                   >
                     {/* Header: Date + Title + Delete */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
-                      <div style={{ minWidth: 0 }}>
-                        <span style={{
-                          background: 'var(--primary-glow)',
-                          color: 'var(--primary-soft)',
-                          border: '1px solid var(--primary-glow)',
-                          borderRadius: '999px',
-                          padding: '0.15rem 0.6rem',
-                          fontSize: '0.7rem',
-                          fontWeight: 700,
-                          display: 'inline-block',
-                          marginBottom: '0.4rem',
-                          letterSpacing: '0.02em'
-                        }}>
+                    <div className="flex justify-between items-start gap-4">
+                      <div className="min-w-0">
+                        <span className="bg-[var(--primary-glow)] border border-[var(--primary-glow)] text-[var(--primary-soft)] rounded-full px-2 py-0.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase mb-2 inline-block">
                           {formattedDate}
                         </span>
-                        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-1)', wordBreak: 'break-word' }}>
+                        <h3 className="text-sm md:text-base font-bold text-[var(--text-1)] leading-snug truncate pr-4">
                           {entry.title}
                         </h3>
                       </div>
@@ -313,34 +250,14 @@ const Journal = () => {
                         id={`delete-entry-${entry._id}`}
                         onClick={() => handleDeleteEntry(entry._id)}
                         disabled={isDeleting}
-                        style={{
-                          background: 'rgba(244, 63, 94, 0.05)',
-                          border: '1px solid rgba(244, 63, 94, 0.15)',
-                          color: 'var(--danger)',
-                          borderRadius: '7px',
-                          padding: '0.35rem 0.55rem',
-                          fontSize: '0.78rem',
-                          cursor: isDeleting ? 'not-allowed' : 'pointer',
-                          opacity: isDeleting ? 0.5 : 1,
-                          transition: 'all 0.15s',
-                          flexShrink: 0
-                        }}
-                        onMouseEnter={e => { if (!isDeleting) e.currentTarget.style.background = 'rgba(244, 63, 94, 0.18)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244, 63, 94, 0.05)'; }}
+                        className="bg-rose-500/5 border border-rose-500/15 text-[var(--danger)] rounded-lg px-3.5 py-2.5 text-xs cursor-pointer min-h-[44px] flex items-center justify-center shrink-0 disabled:opacity-50 transition-colors hover:bg-rose-500/20"
                       >
                         {isDeleting ? '…' : '🗑'}
                       </button>
                     </div>
 
                     {/* Content */}
-                    <p style={{
-                      fontSize: '0.88rem',
-                      color: 'var(--text-2)',
-                      lineHeight: '1.6',
-                      whiteSpace: 'pre-wrap',
-                      wordBreak: 'break-word',
-                      marginTop: '0.25rem'
-                    }}>
+                    <p className="text-xs md:text-sm text-[var(--text-2)] leading-relaxed whitespace-pre-wrap mt-1">
                       {entry.content}
                     </p>
                   </div>

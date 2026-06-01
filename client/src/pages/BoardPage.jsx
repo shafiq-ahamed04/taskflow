@@ -65,7 +65,7 @@ const TaskCard = ({ task, onDelete, deletingId, dragProps = {}, isDragging = fal
         {task.title}
       </p>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyBetween: 'space-between', justifyContent: 'space-between', gap: '0.5rem' }}>
         <span style={{ background: p.bg, color: p.color, borderRadius: '999px', padding: '0.12rem 0.55rem', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
           {p.label}
         </span>
@@ -111,31 +111,29 @@ const AddTaskForm = ({ columnId, boardId, onAdded }) => {
 
   if (!open) return (
     <button id={`add-task-btn-${columnId}`} onClick={() => setOpen(true)}
-      style={{ width: '100%', background: 'transparent', border: '1px dashed var(--border)', borderRadius: '8px', padding: '0.55rem', color: 'var(--text-2)', fontSize: '0.8rem', cursor: 'pointer', marginTop: '0.5rem', transition: 'border-color 0.2s, color 0.2s' }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary-soft)'; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-2)'; }}
+      className="min-h-[44px] flex items-center justify-center gap-1 w-full bg-transparent border border-dashed border-[var(--border)] rounded-lg py-2.5 text-[var(--text-2)] text-xs cursor-pointer mt-2 transition-all duration-150 hover:border-[var(--primary)] hover:text-[var(--primary-soft)]"
     >+ Add task</button>
   );
 
-  const inp = { width: '100%', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-1)', fontSize: '0.82rem', padding: '0.5rem 0.7rem', outline: 'none', transition: 'border-color 0.2s' };
+  const inp = { width: '100%', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-1)', fontSize: '0.82rem', padding: '0.6rem 0.7rem', outline: 'none', transition: 'border-color 0.2s', minHeight: '44px' };
   const onFocus = e => e.target.style.borderColor = 'var(--primary)';
   const onBlur  = e => e.target.style.borderColor = 'var(--border)';
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: '0.6rem', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '10px', padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', animation: 'fadeInUp 0.2s ease' }}>
-      {error && <p style={{ color: 'var(--danger)', fontSize: '0.75rem' }}>{error}</p>}
+    <form onSubmit={handleSubmit} className="mt-2.5 bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 flex flex-col gap-2.5 animate-fade-up">
+      {error && <p className="text-rose-500 text-[10px]">{error}</p>}
       <input id={`task-title-${columnId}`} type="text" placeholder="Task title *" required autoFocus value={title} onChange={e => setTitle(e.target.value)} disabled={adding} style={inp} onFocus={onFocus} onBlur={onBlur} />
       <select id={`task-priority-${columnId}`} value={priority} onChange={e => setPriority(e.target.value)} disabled={adding} style={{ ...inp, cursor: 'pointer' }}>
         <option value="low">🟢 Low</option>
         <option value="medium">🟡 Medium</option>
         <option value="high">🔴 High</option>
       </select>
-      <div style={{ display: 'flex', gap: '0.4rem' }}>
+      <div className="flex gap-2">
         <button id={`submit-task-${columnId}`} type="submit" disabled={adding || !title.trim()}
-          style={{ flex: 1, background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff', borderRadius: '7px', padding: '0.45rem', fontSize: '0.78rem', fontWeight: 700, cursor: adding || !title.trim() ? 'not-allowed' : 'pointer', opacity: adding ? 0.7 : 1 }}
+          className="flex-1 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-soft)] border-none text-white rounded-lg px-3 font-bold text-xs cursor-pointer min-h-[44px] flex items-center justify-center disabled:opacity-50"
         >{adding ? 'Adding…' : 'Add Task'}</button>
         <button type="button" onClick={() => { setOpen(false); setError(null); setTitle(''); }}
-          style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-2)', borderRadius: '7px', padding: '0.45rem 0.75rem', fontSize: '0.78rem', cursor: 'pointer' }}
+          className="bg-transparent border border-[var(--border)] text-[var(--text-2)] rounded-lg px-3 text-xs font-semibold cursor-pointer min-h-[44px] flex items-center justify-center"
         >Cancel</button>
       </div>
     </form>
@@ -143,40 +141,42 @@ const AddTaskForm = ({ columnId, boardId, onAdded }) => {
 };
 
 /* ── KanbanColumn ── */
-const KanbanColumn = ({ col, tasks, boardId, onAdded, onDelete, deletingId }) => {
+const KanbanColumn = ({ col, tasks, boardId, onAdded, onDelete, deletingId, activeCol }) => {
   const { setNodeRef, isOver } = useDroppable({ id: col.id });
+  const isSelected = col.id === activeCol;
+
   return (
-    <div style={{
-      width: '300px', flexShrink: 0,
-      background: 'var(--surface)', border: `1px solid ${isOver ? col.color : 'var(--border)'}`,
-      borderRadius: '14px', padding: '1rem',
-      backdropFilter: 'blur(10px)',
-      display: 'flex', flexDirection: 'column',
-      transition: 'border-color 0.15s, box-shadow 0.15s',
-      boxShadow: isOver ? `0 0 20px ${col.color}25` : 'none',
-      animation: 'fadeInUp 0.3s ease',
-    }}>
+    <div 
+      className={`w-full md:w-[300px] shrink-0 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 flex flex-col backdrop-blur-md transition-all duration-150 animate-fade-up ${
+        isSelected ? 'block' : 'hidden md:flex'
+      }`}
+      style={{
+        borderColor: isOver ? col.color : 'var(--border)',
+        boxShadow: isOver ? `0 0 20px ${col.color}25` : 'none',
+      }}
+    >
       {/* Column header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.9rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: col.color, display: 'inline-block', boxShadow: `0 0 6px ${col.color}` }} />
-          <h3 style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-1)', letterSpacing: '0.01em' }}>{col.title}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full display-inline-block" style={{ background: col.color, boxShadow: `0 0 6px ${col.color}` }} />
+          <h3 className="font-extrabold text-sm text-[var(--text-1)] tracking-tight">{col.title}</h3>
         </div>
-        <span style={{ background: col.badge, color: col.badgeText, borderRadius: '999px', padding: '0.12rem 0.6rem', fontSize: '0.7rem', fontWeight: 700 }}>
+        <span className="badge text-[10px]" style={{ background: col.badge, color: col.badgeText }}>
           {tasks.length}
         </span>
       </div>
 
       {/* Droppable zone */}
-      <div id={col.id} ref={setNodeRef} style={{ flex: 1, minHeight: '200px' }}>
+      <div id={col.id} ref={setNodeRef} className="flex-1 min-h-[220px]">
         <SortableContext items={tasks.map(t => t._id)} strategy={verticalListSortingStrategy}>
           {tasks.length === 0 ? (
-            <div style={{
-              textAlign: 'center', padding: '2rem 0.5rem',
-              color: isOver ? col.badgeText : 'var(--text-3)',
-              fontSize: '0.8rem', border: `1px dashed ${isOver ? col.color : 'var(--border)'}`,
-              borderRadius: '8px', transition: 'all 0.15s',
-            }}>
+            <div 
+              className="text-center py-10 px-2 text-xs rounded-xl border border-dashed transition-all duration-150"
+              style={{
+                color: isOver ? col.badgeText : 'var(--text-3)',
+                borderColor: isOver ? col.color : 'var(--border)'
+              }}
+            >
               {isOver ? '📥 Drop here' : 'No tasks yet'}
             </div>
           ) : (
@@ -204,6 +204,7 @@ const BoardPage = () => {
   const [fetchError, setFetchError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
+  const [activeCol, setActiveCol]   = useState('todo');
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
@@ -252,83 +253,92 @@ const BoardPage = () => {
   const handleLogout = () => { logout(); navigate('/login'); };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-[var(--bg)] text-[var(--text-1)] font-sans">
       <Sidebar active="boards" onLogout={handleLogout} userName={user?.name} />
 
-      <div style={{
-        flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden',
-        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)', backgroundSize: '24px 24px',
-        position: 'relative',
-      }}>
+      <div className="flex-1 flex flex-col overflow-hidden pb-20 md:pb-0 relative">
         {/* Glow */}
-        <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '400px', height: '400px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div className="fixed top-[-100px] right-[-100px] w-[400px] h-[400px] bg-[radial-gradient(circle,var(--primary-glow)_0%,transparent_70%)] pointer-events-none z-0" />
 
         {/* Topbar */}
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '0 1.75rem', height: '60px', flexShrink: 0,
-          background: 'var(--surface)', borderBottom: '1px solid var(--border)',
-          backdropFilter: 'blur(12px)', position: 'relative', zIndex: 10,
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div className="flex items-center justify-between px-4 md:px-8 h-16 shrink-0 bg-[var(--surface)] border-b border-[var(--border)] backdrop-blur-md relative z-10">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
             <button onClick={() => navigate('/')}
-              style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-2)', borderRadius: '7px', padding: '0.35rem 0.7rem', fontSize: '0.9rem', cursor: 'pointer', transition: 'all 0.15s' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary-soft)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-2)'; }}
+              className="bg-transparent border border-[var(--border)] text-[var(--text-2)] rounded-lg px-2.5 py-1.5 text-xs font-bold cursor-pointer transition-all hover:border-[var(--primary)] hover:text-[var(--primary-soft)] min-h-[36px] flex items-center justify-center shrink-0"
             >←</button>
-            <span style={{ color: 'var(--text-3)', fontSize: '0.85rem' }}>My Boards /</span>
-            <h1 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '280px' }}>
+            <span className="text-[10px] md:text-xs text-[var(--text-3)] truncate shrink-0">My Boards /</span>
+            <h1 className="text-xs md:text-sm font-extrabold text-[var(--text-1)] truncate max-w-[120px] sm:max-w-[240px]">
               {loading ? 'Loading…' : board?.title || 'Board'}
             </h1>
           </div>
           {!loading && board?.description && (
-            <p style={{ color: 'var(--text-3)', fontSize: '0.8rem', maxWidth: '320px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{board.description}</p>
+            <p className="hidden sm:block text-xs text-[var(--text-3)] max-w-[200px] md:max-w-[320px] truncate">{board.description}</p>
           )}
         </div>
 
         {/* Loading */}
         {loading && (
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
+          <div className="flex-1 flex flex-col items-center justify-center gap-3">
             <div className="spinner" />
-            <p style={{ color: 'var(--text-2)', fontSize: '0.875rem' }}>Loading board…</p>
+            <p className="text-xs text-[var(--text-2)]">Loading board…</p>
           </div>
         )}
 
         {/* Error */}
         {!loading && fetchError && (
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: 'var(--danger)', borderRadius: '12px', padding: '1.5rem 2rem', textAlign: 'center', maxWidth: '380px' }}>
-              <p style={{ marginBottom: '0.75rem' }}>{fetchError}</p>
-              <button onClick={fetchData} style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff', borderRadius: '8px', padding: '0.45rem 1rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>Retry</button>
+          <div className="flex-1 flex items-center justify-center p-4">
+            <div className="bg-rose-500/10 border border-rose-500/20 text-[var(--danger)] rounded-xl p-6 text-center max-w-sm w-full">
+              <p className="text-xs mb-4">{fetchError}</p>
+              <button onClick={fetchData} className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-soft)] border-none text-white rounded-lg px-4 py-2 text-xs font-bold cursor-pointer">Retry</button>
             </div>
           </div>
         )}
 
-        {/* Kanban board */}
+        {/* Kanban Content Area */}
         {!loading && !fetchError && (
-          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={onDragStart} onDragEnd={onDragEnd}>
-            <div style={{
-              display: 'flex', gap: '1.25rem', padding: '1.5rem 2rem',
-              overflowX: 'auto', flex: 1, alignItems: 'flex-start',
-              scrollbarWidth: 'thin', scrollbarColor: 'var(--border) transparent',
-              position: 'relative', zIndex: 1,
-            }}>
-              {COLUMNS.map(col => (
-                <KanbanColumn
-                  key={col.id} col={col}
-                  tasks={tasks.filter(t => t.status === col.id)}
-                  boardId={boardId}
-                  onAdded={refreshTasks}
-                  onDelete={handleDelete}
-                  deletingId={deletingId}
-                />
-              ))}
+          <div className="flex-1 flex flex-col overflow-hidden p-4 md:p-8">
+            
+            {/* Column switcher tabs for mobile */}
+            <div className="flex md:hidden bg-[var(--surface)] border border-[var(--border)] rounded-xl p-1 mb-4 w-full shrink-0">
+              {COLUMNS.map(col => {
+                const isActive = activeCol === col.id;
+                return (
+                  <button
+                    key={col.id}
+                    onClick={() => setActiveCol(col.id)}
+                    className="flex-1 text-center py-2.5 rounded-lg border-none text-xs font-bold transition-all min-h-[44px]"
+                    style={{
+                      background: isActive ? col.color : 'transparent',
+                      color: isActive ? '#fff' : 'var(--text-2)'
+                    }}
+                  >
+                    {col.title}
+                  </button>
+                );
+              })}
             </div>
 
-            <DragOverlay dropAnimation={{ duration: 180, easing: 'ease' }}>
-              {activeTask ? <TaskCard task={activeTask} onDelete={() => {}} deletingId={null} isOverlay /> : null}
-            </DragOverlay>
-          </DndContext>
+            {/* Kanban columns view */}
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={onDragStart} onDragEnd={onDragEnd}>
+              <div className="flex-1 flex flex-col md:flex-row gap-5 overflow-y-auto md:overflow-x-auto items-start w-full relative z-1 pb-4">
+                {COLUMNS.map(col => (
+                  <KanbanColumn
+                    key={col.id} col={col}
+                    tasks={tasks.filter(t => t.status === col.id)}
+                    boardId={boardId}
+                    onAdded={refreshTasks}
+                    onDelete={handleDelete}
+                    deletingId={deletingId}
+                    activeCol={activeCol}
+                  />
+                ))}
+              </div>
+
+              <DragOverlay dropAnimation={{ duration: 180, easing: 'ease' }}>
+                {activeTask ? <TaskCard task={activeTask} onDelete={() => {}} deletingId={null} isOverlay /> : null}
+              </DragOverlay>
+            </DndContext>
+          </div>
         )}
       </div>
     </div>

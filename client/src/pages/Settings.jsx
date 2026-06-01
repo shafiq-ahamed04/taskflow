@@ -44,136 +44,69 @@ const Settings = () => {
     : 'TF';
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-[var(--bg)] text-[var(--text-1)] font-sans">
       <Sidebar active="settings" onLogout={handleLogout} userName={user?.name} />
 
-      <main style={{
-        flex: 1,
-        overflowY: 'auto',
-        position: 'relative',
-        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-      }}>
+      <main className="flex-1 overflow-y-auto relative pb-24 md:pb-0 w-full dot-grid">
         {/* Glow */}
-        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div className="fixed top-[-150px] right-[-150px] w-[500px] h-[500px] bg-[radial-gradient(circle,var(--primary-glow)_0%,transparent_70%)] pointer-events-none z-0" />
 
-        <div style={{ position: 'relative', zIndex: 1, padding: '2rem 2.5rem', maxWidth: '800px', margin: '0 auto' }}>
+        <div className="p-4 md:p-8 max-w-[800px] w-full mx-auto relative z-10 animate-fade-in">
           
           {/* Top Bar */}
-          <div style={{ marginBottom: '2rem' }}>
-            <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>Settings</h1>
-            <p style={{ color: 'var(--text-2)', fontSize: '0.85rem', marginTop: '2px' }}>Customize your workspace experience and profile preferences</p>
+          <div className="mb-6">
+            <h1 className="text-xl md:text-2xl font-extrabold text-[var(--text-1)] tracking-tight">Settings</h1>
+            <p className="text-xs md:text-sm text-[var(--text-2)] mt-1">Customize your workspace experience and profile preferences</p>
           </div>
 
           {/* Section Grid */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div className="flex flex-col gap-5">
             
             {/* Profile Section */}
-            <div style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: '16px',
-              padding: '1.5rem',
-              backdropFilter: 'blur(8px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '1.5rem',
-              flexWrap: 'wrap',
-              boxShadow: 'var(--shadow-card)'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.2rem',
-                  fontWeight: 700,
-                  color: '#fff',
-                  boxShadow: 'var(--shadow-glow)',
-                  flexShrink: 0
-                }}>{initials}</div>
-                <div style={{ minWidth: 0 }}>
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-1)', margin: 0 }}>{user?.name || 'Developer Account'}</h3>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-2)', marginTop: '2px', wordBreak: 'break-all' }}>{user?.email || 'shafiq@example.com'}</p>
+            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 md:p-6 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[var(--shadow-card)] animate-fade-up">
+              <div className="flex items-center gap-4 min-w-0">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary-soft)] flex items-center justify-center text-lg font-bold text-white shadow-[var(--shadow-glow)] shrink-0">
+                  {initials}
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-sm md:text-base font-bold text-[var(--text-1)] truncate">{user?.name || 'Developer Account'}</h3>
+                  <p className="text-xs text-[var(--text-2)] truncate mt-0.5">{user?.email || 'shafiq@example.com'}</p>
                 </div>
               </div>
-              <span style={{
-                background: 'var(--primary-glow)',
-                color: 'var(--primary-soft)',
-                border: '1px solid var(--primary-glow)',
-                borderRadius: '999px',
-                padding: '0.3rem 0.8rem',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                letterSpacing: '0.02em',
-                alignSelf: 'center'
-              }}>
+              <span className="bg-[var(--primary-glow)] border border-[var(--primary-glow)] text-[var(--primary-soft)] rounded-full px-3.5 py-1 text-xs font-bold shrink-0 w-fit">
                 Free Tier Active
               </span>
             </div>
 
             {/* Appearance Section */}
-            <div style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: '16px',
-              padding: '1.5rem',
-              backdropFilter: 'blur(8px)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1.25rem',
-              boxShadow: 'var(--shadow-card)'
-            }}>
-              <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', borderBottom: '1px solid var(--border)', paddingBottom: '0.75rem', margin: 0 }}>
+            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 md:p-6 backdrop-blur-md flex flex-col gap-5 shadow-[var(--shadow-card)] animate-fade-up">
+              <h2 className="text-sm md:text-base font-bold text-[var(--text-1)] border-b border-[var(--border)] pb-3">
                 🎨 UI Preference & Appearance
               </h2>
 
               {/* Theme Toggle */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                 <div>
-                  <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-1)', margin: 0 }}>Interface Theme</h3>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--text-2)', marginTop: '2px' }}>Choose light theme or premium dark interface</p>
+                  <h3 className="text-xs md:text-sm font-bold text-[var(--text-1)]">Interface Theme</h3>
+                  <p className="text-[10px] md:text-xs text-[var(--text-2)] mt-0.5">Choose light theme or premium dark interface</p>
                 </div>
-                <div style={{
-                  display: 'flex',
-                  background: 'var(--bg)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '9px',
-                  padding: '3px'
-                }}>
+                <div className="flex bg-[var(--bg)] border border-[var(--border)] rounded-xl p-1 w-full sm:w-auto">
                   <button
                     onClick={() => setTheme('dark')}
+                    className="flex-1 sm:flex-initial border-none rounded-lg py-2 px-4 text-xs font-bold cursor-pointer transition-all duration-150 min-h-[38px] flex items-center justify-center"
                     style={{
-                      border: 'none',
                       background: theme === 'dark' ? 'var(--primary)' : 'transparent',
                       color: theme === 'dark' ? '#fff' : 'var(--text-3)',
-                      borderRadius: '6px',
-                      padding: '0.4rem 0.85rem',
-                      fontSize: '0.8rem',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      transition: 'all 0.15s'
                     }}
                   >
                     🌙 Dark
                   </button>
                   <button
                     onClick={() => setTheme('light')}
+                    className="flex-1 sm:flex-initial border-none rounded-lg py-2 px-4 text-xs font-bold cursor-pointer transition-all duration-150 min-h-[38px] flex items-center justify-center"
                     style={{
-                      border: 'none',
                       background: theme === 'light' ? 'var(--primary)' : 'transparent',
                       color: theme === 'light' ? '#fff' : 'var(--text-3)',
-                      borderRadius: '6px',
-                      padding: '0.4rem 0.85rem',
-                      fontSize: '0.8rem',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      transition: 'all 0.15s'
                     }}
                   >
                     ☀️ Light
@@ -182,12 +115,12 @@ const Settings = () => {
               </div>
 
               {/* Color Accents selection */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                 <div>
-                  <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-1)', margin: 0 }}>Brand Accent</h3>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--text-2)', marginTop: '2px' }}>Personalize buttons, highlights and indicators</p>
+                  <h3 className="text-xs md:text-sm font-bold text-[var(--text-1)]">Brand Accent</h3>
+                  <p className="text-[10px] md:text-xs text-[var(--text-2)] mt-0.5">Personalize buttons, highlights and indicators</p>
                 </div>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div className="flex gap-2.5 flex-wrap items-center">
                   {['indigo', 'emerald', 'amber', 'rose', 'cyan'].map((col) => {
                     const colMap = {
                       indigo: '#6366F1',
@@ -202,15 +135,11 @@ const Settings = () => {
                       <div
                         key={col}
                         onClick={() => setAccentColor(col)}
+                        className="w-[32px] h-[32px] rounded-full cursor-pointer transition-all duration-150"
                         style={{
-                          width: '24px',
-                          height: '24px',
-                          borderRadius: '50%',
                           background: hex,
                           border: isSelected ? '2px solid var(--text-1)' : '1px solid var(--border)',
                           boxShadow: isSelected ? `0 0 10px ${hex}` : 'none',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s'
                         }}
                       />
                     );
@@ -220,64 +149,42 @@ const Settings = () => {
             </div>
 
             {/* App info */}
-            <div style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: '16px',
-              padding: '1.5rem',
-              backdropFilter: 'blur(8px)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem',
-              boxShadow: 'var(--shadow-card)'
-            }}>
-              <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', borderBottom: '1px solid var(--border)', paddingBottom: '0.75rem', margin: 0 }}>
+            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 md:p-6 backdrop-blur-md flex flex-col gap-4 shadow-[var(--shadow-card)] animate-fade-up">
+              <h2 className="text-sm md:text-base font-bold text-[var(--text-1)] border-b border-[var(--border)] pb-3">
                 ⚙️ Application Specifications
               </h2>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                <span style={{ color: 'var(--text-2)' }}>Application Version</span>
-                <span style={{ color: 'var(--text-1)', fontWeight: 700 }}>v1.0.0 (Stable Production)</span>
+              <div className="flex justify-between items-center text-xs md:text-sm">
+                <span className="text-[var(--text-2)]">Version</span>
+                <span className="text-[var(--text-1)] font-bold">v1.0.0 (Stable Production)</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                <span style={{ color: 'var(--text-2)' }}>Hosting & CDN Platform</span>
-                <a href="https://taskflow-dun-xi.vercel.app" target="_blank" rel="noreferrer" style={{ color: 'var(--primary-soft)', fontWeight: 700, textDecoration: 'none' }}>
+              <div className="flex justify-between items-center text-xs md:text-sm">
+                <span className="text-[var(--text-2)]">Hosting Platform</span>
+                <a href="https://taskflow-dun-xi.vercel.app" target="_blank" rel="noreferrer" className="text-[var(--primary-soft)] font-bold">
                   Vercel SPA Network ↗
                 </a>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                <span style={{ color: 'var(--text-2)' }}>Render API Server</span>
-                <a href="https://taskflow-98es.onrender.com" target="_blank" rel="noreferrer" style={{ color: 'var(--primary-soft)', fontWeight: 700, textDecoration: 'none' }}>
+              <div className="flex justify-between items-center text-xs md:text-sm">
+                <span className="text-[var(--text-2)]">Server</span>
+                <a href="https://taskflow-98es.onrender.com" target="_blank" rel="noreferrer" className="text-[var(--primary-soft)] font-bold">
                   Render Cloud Web ↗
                 </a>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                <span style={{ color: 'var(--text-2)' }}>Relational Data Engine</span>
-                <span style={{ color: 'var(--success)', fontWeight: 700 }}>🍃 MongoDB Atlas (Cloud Cluster)</span>
+              <div className="flex justify-between items-center text-xs md:text-sm">
+                <span className="text-[var(--text-2)]">Database</span>
+                <span className="text-[var(--success)] font-bold">🍃 MongoDB Atlas</span>
               </div>
             </div>
 
             {/* Rate this App */}
-            <div style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: '16px',
-              padding: '1.5rem',
-              backdropFilter: 'blur(8px)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem',
-              alignItems: 'center',
-              textAlign: 'center',
-              boxShadow: 'var(--shadow-card)'
-            }}>
-              <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', margin: 0 }}>⭐ Rate TaskFlow</h2>
-              <p style={{ fontSize: '0.82rem', color: 'var(--text-2)', maxWidth: '340px', margin: 0 }}>
+            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 md:p-6 backdrop-blur-md flex flex-col gap-3 items-center text-center shadow-[var(--shadow-card)] animate-fade-up">
+              <h2 className="text-sm md:text-base font-bold text-[var(--text-1)]">⭐ Rate TaskFlow</h2>
+              <p className="text-xs text-[var(--text-2)] max-w-sm">
                 Your feedback keeps us going! How would you rate your workspace experience?
               </p>
 
               {/* Star Rating Grid */}
-              <div style={{ display: 'flex', gap: '0.4rem', margin: '0.5rem 0' }}>
+              <div className="flex gap-2 my-2">
                 {[1, 2, 3, 4, 5].map((star) => {
                   const active = hoverRating !== null ? star <= hoverRating : star <= rating;
                   return (
@@ -286,12 +193,10 @@ const Settings = () => {
                       onClick={() => handleRateApp(star)}
                       onMouseEnter={() => setHoverRating(star)}
                       onMouseLeave={() => setHoverRating(null)}
+                      className="text-3xl cursor-pointer transition-transform duration-150"
                       style={{
-                        fontSize: '1.8rem',
-                        cursor: 'pointer',
                         color: active ? '#F59E0B' : 'var(--border-hover)',
                         textShadow: active ? '0 0 10px rgba(245, 158, 11, 0.4)' : 'none',
-                        transition: 'transform 0.15s, color 0.15s'
                       }}
                       onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.2)'}
                       onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
@@ -303,46 +208,22 @@ const Settings = () => {
               </div>
 
               {ratingSubmitted && (
-                <span style={{ fontSize: '0.78rem', color: 'var(--success)', fontWeight: 700, animation: 'fadeInUp 0.2s' }}>
+                <span className="text-[10px] md:text-xs text-[var(--success)] font-bold animate-fade-up">
                   ✓ Feedback submitted. Thank you!
                 </span>
               )}
             </div>
 
             {/* Danger Zone */}
-            <div style={{
-              background: 'rgba(244, 63, 94, 0.03)',
-              border: '1px dashed rgba(244, 63, 94, 0.3)',
-              borderRadius: '16px',
-              padding: '1.5rem',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '1rem',
-              boxShadow: 'var(--shadow-card)'
-            }}>
+            <div className="bg-rose-500/[0.02] border border-dashed border-rose-500/25 rounded-2xl p-4 md:p-6 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[var(--shadow-card)] animate-fade-up">
               <div>
-                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--danger)', margin: 0 }}>Danger Zone</h2>
-                <p style={{ fontSize: '0.78rem', color: 'var(--text-2)', marginTop: '2px' }}>Sign out of this session completely. Clean local cached keys.</p>
+                <h2 className="text-sm md:text-base font-bold text-[var(--danger)]">Danger Zone</h2>
+                <p className="text-[10px] md:text-xs text-[var(--text-2)] mt-0.5">Sign out of this session completely. Clean local cached keys.</p>
               </div>
               <button
                 id="settings-logout-btn"
                 onClick={handleLogout}
-                style={{
-                  background: 'linear-gradient(135deg, var(--danger), #E11D48)',
-                  border: 'none',
-                  color: '#fff',
-                  borderRadius: '9px',
-                  padding: '0.6rem 1.75rem',
-                  fontSize: '0.85rem',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  boxShadow: '0 0 16px rgba(244, 63, 94, 0.3)',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 24px rgba(244, 63, 94, 0.5)'}
-                onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 16px rgba(244, 63, 94, 0.3)'}
+                className="w-full sm:w-auto bg-gradient-to-r from-[var(--danger)] to-[#E11D48] border-none text-white rounded-lg px-6 py-3 text-xs font-bold cursor-pointer min-h-[44px] flex items-center justify-center shadow-[0_0_16px_rgba(244,63,94,0.3)] transition-all duration-150 hover:brightness-110 active:scale-95"
               >
                 Sign out of Account →
               </button>
