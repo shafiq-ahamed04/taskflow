@@ -95,14 +95,14 @@ const Analytics = () => {
     if (active && payload && payload.length) {
       return (
         <div style={{
-          background: 'rgba(19, 19, 26, 0.95)',
-          border: '1px solid #1E1E2E',
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
           borderRadius: '8px',
           padding: '0.5rem 0.75rem',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+          boxShadow: 'var(--shadow-card)',
         }}>
-          <p style={{ color: '#F8FAFC', fontSize: '0.8rem', fontWeight: 600, margin: 0 }}>{payload[0].name}</p>
-          <p style={{ color: '#6366F1', fontSize: '0.85rem', fontWeight: 700, margin: '2px 0 0' }}>Tasks: {payload[0].value}</p>
+          <p style={{ color: 'var(--text-1)', fontSize: '0.8rem', fontWeight: 600, margin: 0 }}>{payload[0].name}</p>
+          <p style={{ color: 'var(--primary-soft)', fontSize: '0.85rem', fontWeight: 700, margin: '2px 0 0' }}>Tasks: {payload[0].value}</p>
         </div>
       );
     }
@@ -111,8 +111,8 @@ const Analytics = () => {
 
   const StatCard = ({ icon, label, value, color }) => (
     <div style={{
-      background: 'rgba(19, 19, 26, 0.85)',
-      border: '1px solid #1E1E2E',
+      background: 'var(--surface)',
+      border: '1px solid var(--border)',
       borderRadius: '14px',
       padding: '1.25rem',
       flex: '1 1 200px',
@@ -120,7 +120,7 @@ const Analytics = () => {
       alignItems: 'center',
       gap: '1rem',
       backdropFilter: 'blur(8px)',
-      boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+      boxShadow: 'var(--shadow-card)',
       animation: 'fadeInUp 0.3s ease',
     }}>
       <div style={{
@@ -136,45 +136,45 @@ const Analytics = () => {
         border: `1px solid ${color}30`,
       }}>{icon}</div>
       <div style={{ minWidth: 0 }}>
-        <p style={{ fontSize: '1.5rem', fontWeight: 800, color: '#F8FAFC', lineHeight: 1.1 }}>{value}</p>
-        <p style={{ fontSize: '0.76rem', color: '#94A3B8', marginTop: '2px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{label}</p>
+        <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.1 }}>{value}</p>
+        <p style={{ fontSize: '0.76rem', color: 'var(--text-2)', marginTop: '2px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{label}</p>
       </div>
     </div>
   );
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#0A0A0F', fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
       <Sidebar active="analytics" onLogout={handleLogout} userName={user?.name} />
 
       <main style={{
         flex: 1,
         overflowY: 'auto',
         position: 'relative',
-        backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.06) 1px, transparent 1px)',
+        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)',
         backgroundSize: '24px 24px',
       }}>
         {/* Glow */}
-        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
         <div style={{ position: 'relative', zIndex: 1, padding: '2rem 2.5rem', maxWidth: '1200px', margin: '0 auto' }}>
           
           {/* Top Bar */}
           <div style={{ marginBottom: '2rem' }}>
-            <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.02em' }}>Analytics</h1>
-            <p style={{ color: '#94A3B8', fontSize: '0.85rem', marginTop: '2px' }}>A dynamic workspace health report & productivity statistics</p>
+            <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>Analytics</h1>
+            <p style={{ color: 'var(--text-2)', fontSize: '0.85rem', marginTop: '2px' }}>A dynamic workspace health report & productivity statistics</p>
           </div>
 
           {/* Loading */}
           {loading ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6rem 0', gap: '1rem' }}>
               <div className="spinner" />
-              <p style={{ color: '#94A3B8', fontSize: '0.875rem' }}>Gathering workspace metrics…</p>
+              <p style={{ color: 'var(--text-2)', fontSize: '0.875rem' }}>Gathering workspace metrics…</p>
             </div>
           ) : error ? (
             /* Error */
-            <div style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: '#fb7185', borderRadius: '12px', padding: '1.5rem', textAlign: 'center' }}>
+            <div style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: 'var(--danger)', borderRadius: '12px', padding: '1.5rem', textAlign: 'center' }}>
               <p style={{ marginBottom: '0.75rem' }}>{error}</p>
-              <button onClick={fetchData} style={{ background: 'linear-gradient(135deg,#6366F1,#818CF8)', border: 'none', color: '#fff', borderRadius: '8px', padding: '0.45rem 1rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>Retry</button>
+              <button onClick={fetchData} style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff', borderRadius: '8px', padding: '0.45rem 1rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>Retry</button>
             </div>
           ) : (
             /* Main Analytics Display */
@@ -182,7 +182,7 @@ const Analytics = () => {
               
               {/* Stat Grid */}
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <StatCard icon="▦" label="Total Boards" value={totalBoards} color="#6366F1" />
+                <StatCard icon="▦" label="Total Boards" value={totalBoards} color="var(--primary)" />
                 <StatCard icon="📋" label="Total Tasks" value={totalTasks} color="#3B82F6" />
                 <StatCard icon="✅" label="Completed Tasks" value={completedTasks} color="#10B981" />
                 <StatCard icon="⏳" label="Pending Tasks" value={pendingTasks} color="#F59E0B" />
@@ -192,31 +192,31 @@ const Analytics = () => {
 
               {/* Chart Section */}
               <div style={{
-                background: 'rgba(19, 19, 26, 0.85)',
-                border: '1px solid #1E1E2E',
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
                 borderRadius: '16px',
                 padding: '1.5rem',
                 backdropFilter: 'blur(8px)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+                boxShadow: 'var(--shadow-card)',
               }}>
-                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '1.5rem' }}>📊 Tasks per Board</h2>
+                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', marginBottom: '1.5rem' }}>📊 Tasks per Board</h2>
                 {chartData.length === 0 ? (
-                  <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#475569', fontSize: '0.85rem' }}>
+                  <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-3)', fontSize: '0.85rem' }}>
                     No board data to map. Create boards and add tasks to see analysis.
                   </div>
                 ) : (
                   <div style={{ width: '100%', height: 280 }}>
                     <ResponsiveContainer>
                       <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1E1E2E" vertical={false} />
-                        <XAxis dataKey="name" stroke="#475569" fontSize={11} tickLine={false} axisLine={false} />
-                        <YAxis stroke="#475569" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
-                        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(99, 102, 241, 0.05)' }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                        <XAxis dataKey="name" stroke="var(--text-2)" fontSize={11} tickLine={false} axisLine={false} />
+                        <YAxis stroke="var(--text-2)" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
+                        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--primary-glow)' }} />
                         <Bar dataKey="Tasks" fill="url(#colorTasks)" radius={[6, 6, 0, 0]} maxBarSize={45}>
                           <defs>
                             <linearGradient id="colorTasks" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#6366F1" stopOpacity={0.9}/>
-                              <stop offset="95%" stopColor="#818CF8" stopOpacity={0.2}/>
+                              <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.9}/>
+                              <stop offset="95%" stopColor="var(--primary-soft)" stopOpacity={0.2}/>
                             </linearGradient>
                           </defs>
                         </Bar>
@@ -228,29 +228,29 @@ const Analytics = () => {
 
               {/* Habit Streak Heatmap */}
               <div style={{
-                background: 'rgba(19, 19, 26, 0.85)',
-                border: '1px solid #1E1E2E',
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
                 borderRadius: '16px',
                 padding: '1.5rem',
                 backdropFilter: 'blur(8px)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+                boxShadow: 'var(--shadow-card)',
               }}>
-                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '1.25rem' }}>🔥 7-Day Habit Completion Heatmap</h2>
+                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', marginBottom: '1.25rem' }}>🔥 7-Day Habit Completion Heatmap</h2>
                 {habits.length === 0 ? (
-                  <div style={{ textAlign: 'center', padding: '2rem 1rem', color: '#475569', fontSize: '0.85rem' }}>
+                  <div style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--text-3)', fontSize: '0.85rem' }}>
                     No habits created yet. Track streaks on the habits screen first.
                   </div>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {/* Header Row */}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid #1E1E2E' }}>
-                      <span style={{ fontSize: '0.78rem', color: '#475569', fontWeight: 700, width: '40%' }}>HABIT NAME</span>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border)' }}>
+                      <span style={{ fontSize: '0.78rem', color: 'var(--text-3)', fontWeight: 700, width: '40%' }}>HABIT NAME</span>
                       <div style={{ display: 'flex', gap: '0.65rem', justifyContent: 'flex-end', width: '60%' }}>
                         {last7Days.map(dateStr => {
                           const parts = dateStr.split('-');
                           const label = `${parts[1]}/${parts[2]}`;
                           return (
-                            <span key={dateStr} style={{ fontSize: '0.68rem', color: '#475569', fontWeight: 700, width: '28px', textAlign: 'center' }}>
+                            <span key={dateStr} style={{ fontSize: '0.68rem', color: 'var(--text-3)', fontWeight: 700, width: '28px', textAlign: 'center' }}>
                               {label}
                             </span>
                           );
@@ -261,7 +261,7 @@ const Analytics = () => {
                     {/* Habit Heatmap list */}
                     {habits.map(habit => (
                       <div key={habit._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '0.85rem', color: '#F8FAFC', fontWeight: 600, width: '40%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--text-1)', fontWeight: 600, width: '40%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {habit.title}
                         </span>
                         <div style={{ display: 'flex', gap: '0.65rem', justifyContent: 'flex-end', width: '60%' }}>
@@ -276,13 +276,12 @@ const Analytics = () => {
                                   height: '16px',
                                   borderRadius: '4px',
                                   background: isDone ? 'linear-gradient(135deg, #10B981, #059669)' : 'rgba(255, 255, 255, 0.03)',
-                                  border: isDone ? 'none' : '1px solid #1E1E2E',
+                                  border: isDone ? 'none' : '1px solid var(--border)',
                                   boxShadow: isDone ? '0 0 6px rgba(16, 185, 129, 0.4)' : 'none',
                                   transition: 'transform 0.15s ease',
                                   cursor: 'help'
                                 }}
                                 onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.15)'}
-                                line-height="none"
                                 onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
                               />
                             );

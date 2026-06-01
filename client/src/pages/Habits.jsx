@@ -122,10 +122,10 @@ const Habits = () => {
   const progressPercent = habits.length > 0 ? Math.round((completedTodayCount / habits.length) * 100) : 0;
 
   const inputStyle = {
-    background: '#0A0A0F',
-    border: '1px solid #1E1E2E',
+    background: 'var(--bg)',
+    border: '1px solid var(--border)',
     borderRadius: '9px',
-    color: '#F8FAFC',
+    color: 'var(--text-1)',
     fontSize: '0.875rem',
     padding: '0.6rem 0.875rem',
     outline: 'none',
@@ -133,36 +133,36 @@ const Habits = () => {
   };
 
   const onFocus = e => {
-    e.target.style.borderColor = '#6366F1';
-    e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.15)';
+    e.target.style.borderColor = 'var(--primary)';
+    e.target.style.boxShadow = '0 0 0 3px var(--primary-glow)';
   };
 
   const onBlur = e => {
-    e.target.style.borderColor = '#1E1E2E';
+    e.target.style.borderColor = 'var(--border)';
     e.target.style.boxShadow = 'none';
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#0A0A0F', fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
       <Sidebar active="habits" onLogout={handleLogout} userName={user?.name} />
 
       <main style={{
         flex: 1,
         overflowY: 'auto',
         position: 'relative',
-        backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.06) 1px, transparent 1px)',
+        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)',
         backgroundSize: '24px 24px',
       }}>
         {/* Glow */}
-        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
         <div style={{ position: 'relative', zIndex: 1, padding: '2rem 2.5rem', maxWidth: '1000px', margin: '0 auto' }}>
           
           {/* Top Bar */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
             <div>
-              <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.02em' }}>Daily Habits</h1>
-              <p style={{ color: '#94A3B8', fontSize: '0.85rem', marginTop: '2px' }}>Track daily routines and build perfect streaks</p>
+              <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>Daily Habits</h1>
+              <p style={{ color: 'var(--text-2)', fontSize: '0.85rem', marginTop: '2px' }}>Track daily routines and build perfect streaks</p>
             </div>
             {habits.length > 0 && (
               <span style={{
@@ -181,8 +181,8 @@ const Habits = () => {
 
           {/* Add Habit Card */}
           <div style={{
-            background: 'rgba(19, 19, 26, 0.85)',
-            border: '1px solid #1E1E2E',
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
             borderRadius: '14px',
             padding: '1.25rem',
             marginBottom: '2rem',
@@ -206,7 +206,7 @@ const Habits = () => {
                 type="submit"
                 disabled={adding || !title.trim()}
                 style={{
-                  background: 'linear-gradient(135deg, #6366F1, #818CF8)',
+                  background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))',
                   border: 'none',
                   color: '#fff',
                   borderRadius: '9px',
@@ -215,7 +215,7 @@ const Habits = () => {
                   fontWeight: 700,
                   cursor: (adding || !title.trim()) ? 'not-allowed' : 'pointer',
                   opacity: adding ? 0.7 : 1,
-                  boxShadow: '0 0 14px rgba(99,102,241,0.3)',
+                  boxShadow: 'var(--shadow-glow)',
                   transition: 'box-shadow 0.2s',
                   whiteSpace: 'nowrap'
                 }}
@@ -230,7 +230,7 @@ const Habits = () => {
             <div style={{
               background: 'rgba(244,63,94,0.1)',
               border: '1px solid rgba(244,63,94,0.3)',
-              color: '#fb7185',
+              color: 'var(--danger)',
               borderRadius: '8px',
               padding: '0.75rem 1rem',
               fontSize: '0.85rem',
@@ -241,12 +241,12 @@ const Habits = () => {
           {/* Progress Bar */}
           {habits.length > 0 && (
             <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#94A3B8', marginBottom: '0.4rem', fontWeight: 600 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-2)', marginBottom: '0.4rem', fontWeight: 600 }}>
                 <span>Today's Progress</span>
                 <span>{progressPercent}% Completed</span>
               </div>
-              <div style={{ height: '6px', background: '#1E1E2E', borderRadius: '3px', overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: `${progressPercent}%`, background: 'linear-gradient(90deg, #6366F1, #10B981)', transition: 'width 0.4s ease' }} />
+              <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${progressPercent}%`, background: 'linear-gradient(90deg, var(--primary), #10B981)', transition: 'width 0.4s ease' }} />
               </div>
             </div>
           )}
@@ -255,14 +255,14 @@ const Habits = () => {
           {loading ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 0', gap: '1rem' }}>
               <div className="spinner" />
-              <p style={{ color: '#94A3B8', fontSize: '0.875rem' }}>Loading habits…</p>
+              <p style={{ color: 'var(--text-2)', fontSize: '0.875rem' }}>Loading habits…</p>
             </div>
           ) : habits.length === 0 ? (
             /* Empty State */
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '5rem 2rem', gap: '1rem', textAlign: 'center' }}>
               <div style={{ fontSize: '3rem' }}>🌱</div>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#F8FAFC' }}>No habits yet</h2>
-              <p style={{ color: '#94A3B8', fontSize: '0.9rem', maxWidth: '360px' }}>Add your first habit above to track routines and build consistent daily streaks!</p>
+              <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--text-1)' }}>No habits yet</h2>
+              <p style={{ color: 'var(--text-2)', fontSize: '0.9rem', maxWidth: '360px' }}>Add your first habit above to track routines and build consistent daily streaks!</p>
             </div>
           ) : (
             /* Habits List */
@@ -276,8 +276,8 @@ const Habits = () => {
                   <div
                     key={habit._id}
                     style={{
-                      background: isCompletedToday ? 'rgba(16, 185, 129, 0.04)' : 'rgba(19, 19, 26, 0.85)',
-                      border: isCompletedToday ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid #1E1E2E',
+                      background: isCompletedToday ? 'rgba(16, 185, 129, 0.04)' : 'var(--surface)',
+                      border: isCompletedToday ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid var(--border)',
                       borderRadius: '12px',
                       padding: '1rem 1.25rem',
                       display: 'flex',
@@ -296,7 +296,7 @@ const Habits = () => {
                           width: '22px',
                           height: '22px',
                           borderRadius: '50%',
-                          border: isCompletedToday ? '2px solid #10B981' : '2px solid #6366F1',
+                          border: isCompletedToday ? '2px solid #10B981' : '2px solid var(--primary)',
                           background: isCompletedToday ? '#10B981' : 'transparent',
                           display: 'flex',
                           alignItems: 'center',
@@ -307,7 +307,7 @@ const Habits = () => {
                         }}
                       >
                         {isCompletedToday && (
-                          <span style={{ color: '#fff', fontSize: '0.7rem', fontWeight: 900 }}>✓</span>
+                           <span style={{ color: '#fff', fontSize: '0.7rem', fontWeight: 900 }}>✓</span>
                         )}
                       </div>
 
@@ -316,7 +316,7 @@ const Habits = () => {
                         <h3 style={{
                           fontSize: '0.92rem',
                           fontWeight: 700,
-                          color: isCompletedToday ? '#A7F3D0' : '#F8FAFC',
+                          color: isCompletedToday ? '#A7F3D0' : 'var(--text-1)',
                           textDecoration: isCompletedToday ? 'line-through' : 'none',
                           opacity: isCompletedToday ? 0.75 : 1,
                           transition: 'all 0.2s',
@@ -340,7 +340,7 @@ const Habits = () => {
                       style={{
                         background: 'rgba(244, 63, 94, 0.05)',
                         border: '1px solid rgba(244, 63, 94, 0.15)',
-                        color: '#FB7185',
+                        color: 'var(--danger)',
                         borderRadius: '7px',
                         padding: '0.35rem 0.55rem',
                         fontSize: '0.78rem',

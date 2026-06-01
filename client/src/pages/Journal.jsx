@@ -77,10 +77,10 @@ const Journal = () => {
   };
 
   const inputStyle = {
-    background: '#0A0A0F',
-    border: '1px solid #1E1E2E',
+    background: 'var(--bg)',
+    border: '1px solid var(--border)',
     borderRadius: '9px',
-    color: '#F8FAFC',
+    color: 'var(--text-1)',
     fontSize: '0.875rem',
     padding: '0.65rem 0.875rem',
     outline: 'none',
@@ -88,48 +88,48 @@ const Journal = () => {
   };
 
   const onFocus = e => {
-    e.target.style.borderColor = '#6366F1';
-    e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.15)';
+    e.target.style.borderColor = 'var(--primary)';
+    e.target.style.boxShadow = '0 0 0 3px var(--primary-glow)';
   };
 
   const onBlur = e => {
-    e.target.style.borderColor = '#1E1E2E';
+    e.target.style.borderColor = 'var(--border)';
     e.target.style.boxShadow = 'none';
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#0A0A0F', fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
       <Sidebar active="journal" onLogout={handleLogout} userName={user?.name} />
 
       <main style={{
         flex: 1,
         overflowY: 'auto',
         position: 'relative',
-        backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.06) 1px, transparent 1px)',
+        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)',
         backgroundSize: '24px 24px',
       }}>
         {/* Glow */}
-        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div style={{ position: 'fixed', top: '-150px', right: '-150px', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
         <div style={{ position: 'relative', zIndex: 1, padding: '2rem 2.5rem', maxWidth: '900px', margin: '0 auto' }}>
           
           {/* Top Bar */}
           <div style={{ marginBottom: '2rem' }}>
-            <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.02em' }}>My Journal</h1>
-            <p style={{ color: '#94A3B8', fontSize: '0.85rem', marginTop: '2px' }}>Your secure private space for daily reflections and thoughts</p>
+            <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>My Journal</h1>
+            <p style={{ color: 'var(--text-2)', fontSize: '0.85rem', marginTop: '2px' }}>Your secure private space for daily reflections and thoughts</p>
           </div>
 
           {/* Form */}
           <div style={{
-            background: 'rgba(19, 19, 26, 0.85)',
-            border: '1px solid #1E1E2E',
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
             borderRadius: '16px',
             padding: '1.5rem',
             marginBottom: '2.5rem',
             backdropFilter: 'blur(8px)',
-            boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
+            boxShadow: 'var(--shadow-card)',
           }}>
-            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
               📝 New Reflection
             </h2>
             
@@ -137,7 +137,7 @@ const Journal = () => {
               <div style={{
                 background: 'rgba(244,63,94,0.1)',
                 border: '1px solid rgba(244,63,94,0.3)',
-                color: '#fb7185',
+                color: 'var(--danger)',
                 borderRadius: '8px',
                 padding: '0.75rem 1rem',
                 fontSize: '0.85rem',
@@ -148,7 +148,7 @@ const Journal = () => {
             <form onSubmit={handleSaveEntry} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ flex: 1, minWidth: '200px' }}>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94A3B8', marginBottom: '0.4rem' }}>TITLE</label>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-2)', marginBottom: '0.4rem' }}>TITLE</label>
                   <input
                     id="journal-title-input"
                     type="text"
@@ -163,7 +163,7 @@ const Journal = () => {
                   />
                 </div>
                 <div style={{ width: '180px' }}>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94A3B8', marginBottom: '0.4rem' }}>DATE</label>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-2)', marginBottom: '0.4rem' }}>DATE</label>
                   <input
                     id="journal-date-input"
                     type="date"
@@ -179,7 +179,7 @@ const Journal = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94A3B8', marginBottom: '0.4rem' }}>CONTENT</label>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-2)', marginBottom: '0.4rem' }}>CONTENT</label>
                 <textarea
                   id="journal-content-textarea"
                   required
@@ -205,7 +205,7 @@ const Journal = () => {
                 type="submit"
                 disabled={saving || !title.trim() || !content.trim()}
                 style={{
-                  background: 'linear-gradient(135deg, #6366F1, #818CF8)',
+                  background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))',
                   border: 'none',
                   color: '#fff',
                   borderRadius: '9px',
@@ -214,7 +214,7 @@ const Journal = () => {
                   fontWeight: 700,
                   cursor: (saving || !title.trim() || !content.trim()) ? 'not-allowed' : 'pointer',
                   opacity: saving ? 0.7 : 1,
-                  boxShadow: '0 0 14px rgba(99,102,241,0.3)',
+                  boxShadow: 'var(--shadow-glow)',
                   transition: 'box-shadow 0.2s, transform 0.1s',
                   alignSelf: 'flex-start',
                   paddingLeft: '2rem',
@@ -227,11 +227,11 @@ const Journal = () => {
           </div>
 
           {/* Past Entries Heading */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', borderBottom: '1px solid #1E1E2E', paddingBottom: '0.75rem' }}>
-            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#F8FAFC' }}>Past Entries</h2>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.75rem' }}>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-1)' }}>Past Entries</h2>
             <span style={{
-              background: '#1E1E2E',
-              color: '#94A3B8',
+              background: 'var(--border)',
+              color: 'var(--text-2)',
               borderRadius: '999px',
               padding: '0.15rem 0.6rem',
               fontSize: '0.75rem',
@@ -245,13 +245,13 @@ const Journal = () => {
           {loading ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 0', gap: '1rem' }}>
               <div className="spinner" />
-              <p style={{ color: '#94A3B8', fontSize: '0.875rem' }}>Loading entries…</p>
+              <p style={{ color: 'var(--text-2)', fontSize: '0.875rem' }}>Loading entries…</p>
             </div>
           ) : entries.length === 0 ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', gap: '1rem', textAlign: 'center' }}>
               <div style={{ fontSize: '3rem' }}>📓</div>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#F8FAFC' }}>No journal entries yet</h2>
-              <p style={{ color: '#94A3B8', fontSize: '0.875rem', maxWidth: '320px' }}>Start documenting your journey. Add your thoughts above to build a beautiful repository of daily memories.</p>
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-1)' }}>No journal entries yet</h2>
+              <p style={{ color: 'var(--text-2)', fontSize: '0.875rem', maxWidth: '320px' }}>Start documenting your journey. Add your thoughts above to build a beautiful repository of daily memories.</p>
             </div>
           ) : (
             /* Journal Entries List */
@@ -271,9 +271,9 @@ const Journal = () => {
                   <div
                     key={entry._id}
                     style={{
-                      background: 'rgba(19, 19, 26, 0.85)',
-                      border: '1px solid #1E1E2E',
-                      borderLeft: '4px solid #6366F1',
+                      background: 'var(--surface)',
+                      border: '1px solid var(--border)',
+                      borderLeft: '4px solid var(--primary)',
                       borderRadius: '12px',
                       padding: '1.25rem',
                       backdropFilter: 'blur(8px)',
@@ -284,16 +284,16 @@ const Journal = () => {
                       transition: 'border-color 0.2s, transform 0.2s',
                       animation: `fadeInUp ${0.2 + idx * 0.05}s ease`
                     }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#818CF8'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#1E1E2E'; }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary-soft)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; }}
                   >
                     {/* Header: Date + Title + Delete */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
                       <div style={{ minWidth: 0 }}>
                         <span style={{
-                          background: 'rgba(99, 102, 241, 0.12)',
-                          color: '#A5B4FC',
-                          border: '1px solid rgba(99, 102, 241, 0.25)',
+                          background: 'var(--primary-glow)',
+                          color: 'var(--primary-soft)',
+                          border: '1px solid var(--primary-glow)',
                           borderRadius: '999px',
                           padding: '0.15rem 0.6rem',
                           fontSize: '0.7rem',
@@ -304,7 +304,7 @@ const Journal = () => {
                         }}>
                           {formattedDate}
                         </span>
-                        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#F8FAFC', wordBreak: 'break-word' }}>
+                        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-1)', wordBreak: 'break-word' }}>
                           {entry.title}
                         </h3>
                       </div>
@@ -316,7 +316,7 @@ const Journal = () => {
                         style={{
                           background: 'rgba(244, 63, 94, 0.05)',
                           border: '1px solid rgba(244, 63, 94, 0.15)',
-                          color: '#FB7185',
+                          color: 'var(--danger)',
                           borderRadius: '7px',
                           padding: '0.35rem 0.55rem',
                           fontSize: '0.78rem',
@@ -335,7 +335,7 @@ const Journal = () => {
                     {/* Content */}
                     <p style={{
                       fontSize: '0.88rem',
-                      color: '#94A3B8',
+                      color: 'var(--text-2)',
                       lineHeight: '1.6',
                       whiteSpace: 'pre-wrap',
                       wordBreak: 'break-word',

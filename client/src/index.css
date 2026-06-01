@@ -27,6 +27,20 @@
   --shadow-card:  0 4px 24px rgba(0,0,0,0.4);
 }
 
+/* ── Light Mode Variables ── */
+.light-mode {
+  --bg:           #F8FAFC;
+  --surface:      #FFFFFF;
+  --surface-2:    #F1F5F9;
+  --sidebar:      #FFFFFF;
+  --border:       #E2E8F0;
+  --border-hover: #CBD5E1;
+  --text-1:       #0F172A;
+  --text-2:       #475569;
+  --text-3:       #94A3B8;
+  --shadow-card:  0 4px 20px rgba(15,23,42,0.05);
+}
+
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

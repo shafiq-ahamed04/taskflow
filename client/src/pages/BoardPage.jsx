@@ -31,13 +31,13 @@ const TaskCard = ({ task, onDelete, deletingId, dragProps = {}, isDragging = fal
 
   return (
     <div {...dragProps} style={{
-      background: isOverlay ? 'rgba(30,30,50,0.98)' : 'rgba(19,19,26,0.9)',
-      border: isOverlay ? '1px solid #6366F1' : '1px solid #1E1E2E',
+      background: isOverlay ? 'rgba(30,30,50,0.98)' : 'var(--surface)',
+      border: isOverlay ? '1px solid var(--primary)' : '1px solid var(--border)',
       borderRadius: '10px', padding: '0.85rem', marginBottom: '0.5rem',
       cursor: isOverlay ? 'grabbing' : isDragging ? 'grabbing' : 'grab',
       position: 'relative', userSelect: 'none',
       backdropFilter: 'blur(8px)',
-      boxShadow: isOverlay ? '0 16px 40px rgba(0,0,0,0.6), 0 0 20px rgba(99,102,241,0.2)' : isDragging ? 'none' : '0 2px 8px rgba(0,0,0,0.3)',
+      boxShadow: isOverlay ? '0 16px 40px rgba(0,0,0,0.6), 0 0 20px rgba(99,102,241,0.2)' : isDragging ? 'none' : 'var(--shadow-card)',
       opacity: isDragging ? 0.4 : 1,
       transition: 'box-shadow 0.2s, border-color 0.2s',
     }}>
@@ -52,16 +52,16 @@ const TaskCard = ({ task, onDelete, deletingId, dragProps = {}, isDragging = fal
           disabled={isDeleting}
           style={{
             position: 'absolute', top: '0.6rem', right: '0.6rem',
-            background: 'none', border: 'none', color: '#475569',
+            background: 'none', border: 'none', color: 'var(--text-3)',
             cursor: isDeleting ? 'not-allowed' : 'pointer', fontSize: '0.75rem',
             padding: '2px 4px', borderRadius: '4px', transition: 'color 0.15s, background 0.15s',
           }}
-          onMouseEnter={e => { if (!isDeleting) { e.currentTarget.style.color = '#fb7185'; e.currentTarget.style.background = 'rgba(244,63,94,0.1)'; } }}
-          onMouseLeave={e => { e.currentTarget.style.color = '#475569'; e.currentTarget.style.background = 'none'; }}
+          onMouseEnter={e => { if (!isDeleting) { e.currentTarget.style.color = 'var(--danger)'; e.currentTarget.style.background = 'rgba(244,63,94,0.1)'; } }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-3)'; e.currentTarget.style.background = 'none'; }}
         >{isDeleting ? '…' : '✕'}</button>
       )}
 
-      <p style={{ color: '#F8FAFC', fontWeight: 600, fontSize: '0.85rem', lineHeight: 1.4, paddingRight: '1.5rem', marginBottom: '0.55rem', wordBreak: 'break-word' }}>
+      <p style={{ color: 'var(--text-1)', fontWeight: 600, fontSize: '0.85rem', lineHeight: 1.4, paddingRight: '1.5rem', marginBottom: '0.55rem', wordBreak: 'break-word' }}>
         {task.title}
       </p>
 
@@ -70,7 +70,7 @@ const TaskCard = ({ task, onDelete, deletingId, dragProps = {}, isDragging = fal
           {p.label}
         </span>
         {task.createdAt && (
-          <span style={{ color: '#475569', fontSize: '0.68rem' }}>
+          <span style={{ color: 'var(--text-3)', fontSize: '0.68rem' }}>
             {new Date(task.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </span>
         )}
@@ -111,19 +111,19 @@ const AddTaskForm = ({ columnId, boardId, onAdded }) => {
 
   if (!open) return (
     <button id={`add-task-btn-${columnId}`} onClick={() => setOpen(true)}
-      style={{ width: '100%', background: 'transparent', border: '1px dashed #1E1E2E', borderRadius: '8px', padding: '0.55rem', color: '#475569', fontSize: '0.8rem', cursor: 'pointer', marginTop: '0.5rem', transition: 'border-color 0.2s, color 0.2s' }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.color = '#818CF8'; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = '#1E1E2E'; e.currentTarget.style.color = '#475569'; }}
+      style={{ width: '100%', background: 'transparent', border: '1px dashed var(--border)', borderRadius: '8px', padding: '0.55rem', color: 'var(--text-2)', fontSize: '0.8rem', cursor: 'pointer', marginTop: '0.5rem', transition: 'border-color 0.2s, color 0.2s' }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary-soft)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-2)'; }}
     >+ Add task</button>
   );
 
-  const inp = { width: '100%', background: '#0A0A0F', border: '1px solid #1E1E2E', borderRadius: '8px', color: '#F8FAFC', fontSize: '0.82rem', padding: '0.5rem 0.7rem', outline: 'none', transition: 'border-color 0.2s' };
-  const onFocus = e => e.target.style.borderColor = '#6366F1';
-  const onBlur  = e => e.target.style.borderColor = '#1E1E2E';
+  const inp = { width: '100%', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-1)', fontSize: '0.82rem', padding: '0.5rem 0.7rem', outline: 'none', transition: 'border-color 0.2s' };
+  const onFocus = e => e.target.style.borderColor = 'var(--primary)';
+  const onBlur  = e => e.target.style.borderColor = 'var(--border)';
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: '0.6rem', background: 'rgba(8,8,16,0.8)', border: '1px solid #1E1E2E', borderRadius: '10px', padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', animation: 'fadeInUp 0.2s ease' }}>
-      {error && <p style={{ color: '#fb7185', fontSize: '0.75rem' }}>{error}</p>}
+    <form onSubmit={handleSubmit} style={{ marginTop: '0.6rem', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '10px', padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', animation: 'fadeInUp 0.2s ease' }}>
+      {error && <p style={{ color: 'var(--danger)', fontSize: '0.75rem' }}>{error}</p>}
       <input id={`task-title-${columnId}`} type="text" placeholder="Task title *" required autoFocus value={title} onChange={e => setTitle(e.target.value)} disabled={adding} style={inp} onFocus={onFocus} onBlur={onBlur} />
       <select id={`task-priority-${columnId}`} value={priority} onChange={e => setPriority(e.target.value)} disabled={adding} style={{ ...inp, cursor: 'pointer' }}>
         <option value="low">🟢 Low</option>
@@ -132,10 +132,10 @@ const AddTaskForm = ({ columnId, boardId, onAdded }) => {
       </select>
       <div style={{ display: 'flex', gap: '0.4rem' }}>
         <button id={`submit-task-${columnId}`} type="submit" disabled={adding || !title.trim()}
-          style={{ flex: 1, background: 'linear-gradient(135deg,#6366F1,#818CF8)', border: 'none', color: '#fff', borderRadius: '7px', padding: '0.45rem', fontSize: '0.78rem', fontWeight: 700, cursor: adding || !title.trim() ? 'not-allowed' : 'pointer', opacity: adding ? 0.7 : 1 }}
+          style={{ flex: 1, background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff', borderRadius: '7px', padding: '0.45rem', fontSize: '0.78rem', fontWeight: 700, cursor: adding || !title.trim() ? 'not-allowed' : 'pointer', opacity: adding ? 0.7 : 1 }}
         >{adding ? 'Adding…' : 'Add Task'}</button>
         <button type="button" onClick={() => { setOpen(false); setError(null); setTitle(''); }}
-          style={{ background: 'transparent', border: '1px solid #1E1E2E', color: '#94A3B8', borderRadius: '7px', padding: '0.45rem 0.75rem', fontSize: '0.78rem', cursor: 'pointer' }}
+          style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-2)', borderRadius: '7px', padding: '0.45rem 0.75rem', fontSize: '0.78rem', cursor: 'pointer' }}
         >Cancel</button>
       </div>
     </form>
@@ -148,7 +148,7 @@ const KanbanColumn = ({ col, tasks, boardId, onAdded, onDelete, deletingId }) =>
   return (
     <div style={{
       width: '300px', flexShrink: 0,
-      background: 'rgba(13,13,24,0.7)', border: `1px solid ${isOver ? col.color : '#1E1E2E'}`,
+      background: 'var(--surface)', border: `1px solid ${isOver ? col.color : 'var(--border)'}`,
       borderRadius: '14px', padding: '1rem',
       backdropFilter: 'blur(10px)',
       display: 'flex', flexDirection: 'column',
@@ -160,7 +160,7 @@ const KanbanColumn = ({ col, tasks, boardId, onAdded, onDelete, deletingId }) =>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.9rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: col.color, display: 'inline-block', boxShadow: `0 0 6px ${col.color}` }} />
-          <h3 style={{ fontWeight: 700, fontSize: '0.875rem', color: '#E2E8F0', letterSpacing: '0.01em' }}>{col.title}</h3>
+          <h3 style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-1)', letterSpacing: '0.01em' }}>{col.title}</h3>
         </div>
         <span style={{ background: col.badge, color: col.badgeText, borderRadius: '999px', padding: '0.12rem 0.6rem', fontSize: '0.7rem', fontWeight: 700 }}>
           {tasks.length}
@@ -173,8 +173,8 @@ const KanbanColumn = ({ col, tasks, boardId, onAdded, onDelete, deletingId }) =>
           {tasks.length === 0 ? (
             <div style={{
               textAlign: 'center', padding: '2rem 0.5rem',
-              color: isOver ? col.badgeText : '#2E2E45',
-              fontSize: '0.8rem', border: `1px dashed ${isOver ? col.color : '#1E1E2E'}`,
+              color: isOver ? col.badgeText : 'var(--text-3)',
+              fontSize: '0.8rem', border: `1px dashed ${isOver ? col.color : 'var(--border)'}`,
               borderRadius: '8px', transition: 'all 0.15s',
             }}>
               {isOver ? '📥 Drop here' : 'No tasks yet'}
@@ -252,37 +252,37 @@ const BoardPage = () => {
   const handleLogout = () => { logout(); navigate('/login'); };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#0A0A0F', fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', color: 'var(--text-1)', fontFamily: "'Inter', sans-serif" }}>
       <Sidebar active="boards" onLogout={handleLogout} userName={user?.name} />
 
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden',
-        backgroundImage: 'radial-gradient(circle, rgba(99,102,241,0.05) 1px, transparent 1px)', backgroundSize: '24px 24px',
+        backgroundImage: 'radial-gradient(circle, var(--primary-glow) 1px, transparent 1px)', backgroundSize: '24px 24px',
         position: 'relative',
       }}>
         {/* Glow */}
-        <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(99,102,241,0.09) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+        <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '400px', height: '400px', background: 'radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
         {/* Topbar */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '0 1.75rem', height: '60px', flexShrink: 0,
-          background: 'rgba(8,8,16,0.8)', borderBottom: '1px solid #1E1E2E',
+          background: 'var(--surface)', borderBottom: '1px solid var(--border)',
           backdropFilter: 'blur(12px)', position: 'relative', zIndex: 10,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <button onClick={() => navigate('/')}
-              style={{ background: 'transparent', border: '1px solid #1E1E2E', color: '#94A3B8', borderRadius: '7px', padding: '0.35rem 0.7rem', fontSize: '0.9rem', cursor: 'pointer', transition: 'all 0.15s' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.color = '#818CF8'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = '#1E1E2E'; e.currentTarget.style.color = '#94A3B8'; }}
+              style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-2)', borderRadius: '7px', padding: '0.35rem 0.7rem', fontSize: '0.9rem', cursor: 'pointer', transition: 'all 0.15s' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary-soft)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-2)'; }}
             >←</button>
-            <span style={{ color: '#475569', fontSize: '0.85rem' }}>My Boards /</span>
-            <h1 style={{ fontSize: '1rem', fontWeight: 700, color: '#F8FAFC', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '280px' }}>
+            <span style={{ color: 'var(--text-3)', fontSize: '0.85rem' }}>My Boards /</span>
+            <h1 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-1)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '280px' }}>
               {loading ? 'Loading…' : board?.title || 'Board'}
             </h1>
           </div>
           {!loading && board?.description && (
-            <p style={{ color: '#475569', fontSize: '0.8rem', maxWidth: '320px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{board.description}</p>
+            <p style={{ color: 'var(--text-3)', fontSize: '0.8rem', maxWidth: '320px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{board.description}</p>
           )}
         </div>
 
@@ -290,16 +290,16 @@ const BoardPage = () => {
         {loading && (
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
             <div className="spinner" />
-            <p style={{ color: '#94A3B8', fontSize: '0.875rem' }}>Loading board…</p>
+            <p style={{ color: 'var(--text-2)', fontSize: '0.875rem' }}>Loading board…</p>
           </div>
         )}
 
         {/* Error */}
         {!loading && fetchError && (
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: '#fb7185', borderRadius: '12px', padding: '1.5rem 2rem', textAlign: 'center', maxWidth: '380px' }}>
+            <div style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: 'var(--danger)', borderRadius: '12px', padding: '1.5rem 2rem', textAlign: 'center', maxWidth: '380px' }}>
               <p style={{ marginBottom: '0.75rem' }}>{fetchError}</p>
-              <button onClick={fetchData} style={{ background: 'linear-gradient(135deg,#6366F1,#818CF8)', border: 'none', color: '#fff', borderRadius: '8px', padding: '0.45rem 1rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>Retry</button>
+              <button onClick={fetchData} style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-soft))', border: 'none', color: '#fff', borderRadius: '8px', padding: '0.45rem 1rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>Retry</button>
             </div>
           </div>
         )}
@@ -310,7 +310,7 @@ const BoardPage = () => {
             <div style={{
               display: 'flex', gap: '1.25rem', padding: '1.5rem 2rem',
               overflowX: 'auto', flex: 1, alignItems: 'flex-start',
-              scrollbarWidth: 'thin', scrollbarColor: '#1E1E2E transparent',
+              scrollbarWidth: 'thin', scrollbarColor: 'var(--border) transparent',
               position: 'relative', zIndex: 1,
             }}>
               {COLUMNS.map(col => (
