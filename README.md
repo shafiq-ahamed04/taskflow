@@ -46,7 +46,11 @@ Modern software teams need a tool that is fast, intuitive, and visual. TaskFlow 
 |---|---|
 | 🔐 **JWT Authentication** | Secure register/login with token-based auth; protected API routes |
 | 📋 **Board Management** | Create, view, and delete multiple project boards |
-| ✅ **Task Management** | Full CRUD — create, update, move, and delete tasks per board |
+| 🔄 **Bidirectional Kanban Sync** | Daily Habits are linked with Kanban tasks. Adding a habit auto-creates a task. Ticking/moving tasks dynamically syncs across Habit & Board views! |
+| ✅ **Daily Habits Tracker** | Complete micro-routines with checklist toggle, current progress % bar, and consecutive streak calculations. |
+| 📓 **Monospace Journaling** | Log daily notes, reflections, and tasks. Filtered by calendar date with beautiful monospace glass layout cards. |
+| 📊 **Analytics Dashboard** | Live stats counters, Recharts task progress visualizer per board, and 7-day habit completion dot-matrix heatmap grid. |
+| ⚙️ **Premium Settings** | Persistent theme-switching framework (Dark/Light mode), active color theme choice, API latency summary, and 5-star rating widget. |
 | 🖱️ **Drag & Drop** | Move tasks between columns (To Do → In Progress → Done) using `@dnd-kit` |
 | 🏷️ **Priority Labels** | Tag tasks as Low, Medium, or High priority with colour-coded badges |
 | 🛡️ **Protected Routes** | Client-side route guards using Zustand auth state |
